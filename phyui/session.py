@@ -278,6 +278,7 @@ class Session(BaseSession):
         try:
             view = ClusterView(clusters=self.clustering.cluster_ids,
                                colors=cluster_colors)
+            self.view = view
         except RuntimeError:
             warn("The cluster view only works in IPython.")
             return
