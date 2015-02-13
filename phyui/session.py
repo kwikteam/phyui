@@ -24,7 +24,7 @@ from ._history import GlobalHistory
 from .clustering import Clustering
 from ...io.kwik_model import KwikModel
 from ...notebook.utils import load_css, ipython_shell
-from ...notebook.cluster_view import ClusterView
+from ...notebook.cluster_view import ClusterView, cluster_info
 from .cluster_info import ClusterMetadata
 from .store import ClusterStore, StoreItem
 from .selector import Selector
@@ -276,8 +276,10 @@ class Session(BaseSession):
         cluster_colors = [self.cluster_metadata.color(cluster)
                           for cluster in self.clustering.cluster_ids]
         try:
-            view = ClusterView(clusters=self.clustering.cluster_ids,
-                               colors=cluster_colors)
+            #view = ClusterView(clusters=self.clustering.cluster_ids,
+            #                   colors=cluster_colors)
+            clusters = [ cluster_info(c, quality=0, nchannels=1, nspikes=2, ccg=None) for c in session.clustering.cluster_labels]
+            view = ClusterView(clusters=clusters, colors=cluster_colors)
             self.view = view
         except RuntimeError:
             warn("The cluster view only works in IPython.")
