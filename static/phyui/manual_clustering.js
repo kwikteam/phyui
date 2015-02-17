@@ -94,7 +94,9 @@ define(function (require) {
     events.on('kernel_connected.Kernel', function(){
         console.log('session done');
         myhack.create_result_cell('#placeholder1', "from phy.cluster.manual.interface import start_manual_clustering; session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
-        myhack.create_result_cell('#placeholder2', "1+1");
+        myhack.create_result_cell('#placeholder2', "import vispy; \
+                                                    vispy.app.use_app('ipynb_webgl'); \
+                                                    w = session.show_waveforms()");
         myhack.create_cell('#placeholder3', "from phy.cluster.manual.interface import start_manual_clustering; session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
         myhack.create_cell('#placeholder4');
     });
