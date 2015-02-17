@@ -1,0 +1,25 @@
+{
+  "name": "phy",
+  "version": "1.0.0",
+  "description": "Clustering",
+  "author": "kwikteam@cortexlab.com",
+  "homepage": "https://github.com/kwikteam/phy",
+  "main": "./src/index",
+  "scripts": {
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kwikteam/phy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kwikteam/phy/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-jshint": "^1.8.5",
+    "jshint-summary": "^0.4.0"
+  }
+}
