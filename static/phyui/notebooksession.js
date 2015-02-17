@@ -119,12 +119,12 @@ define(function(require) {
 
             var cc = new codecell.CodeCell(this.session.kernel, options);
             cc.set_text(codetorun || '');
-            var btn = $('<input type="button" id="field" value="Execute"/>');
-            btn.on("click", function() {
-                console.log('clicked');
-                cc.execute();
-            });
-            $(placeholder).append(btn);
+            // var btn = $('<input type="button" id="field" value="Execute"/>');
+            // btn.on("click", function() {
+            //     console.log('clicked');
+            //     cc.execute();
+            // });
+            // $(placeholder).append(btn);
             cc.element.find('.input').hide();
             cc.element.find('.prompt').hide();
             //$(placeholder).append(cc.output_area.element);
