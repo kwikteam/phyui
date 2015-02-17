@@ -10,15 +10,22 @@ define(function(require) {
     var manager = require('widgets/js/manager');
     var codecell = require('notebook/js/codecell');
     var configmod = require('services/config');
+    var actions = require('notebook/js/actions');
+    var keyboardmanager = require('notebook/js/keyboardmanager');
+
+    var acts = new actions.init();
+    var keyboard_manager = new keyboardmanager.KeyboardManager({
+        pager: undefined, //is that needed?
+        events: events,
+        actions: acts });
 
     console.log("loading ... in progress");
-
 
     //fake notebook because session API rely on notebook
     //TODO: remove the need to rely on Notebook in session
     var FakeNotebook = function() {
         this.events = events;              //session ctor
-        this.keyboard_manager = undefined; //widget_manager ctor
+        this.keyboard_manager = keyboard_manager; //widget_manager ctor
 
         //needed to display widget
         FakeNotebook.prototype.get_msg_cell = function (msg_id) {
@@ -36,7 +43,6 @@ define(function(require) {
         this.notebook_path = nbpath;
         this.base_url = '/';
         this.ws_url = location.protocol.replace('http', 'ws') + "//" + location.host; //undefined should works once https://github.com/ipython/ipython/pull/7763 is merged
-
         this.events = events;
 
 
@@ -85,7 +91,7 @@ define(function(require) {
             var options = {
                 events: this.events,
                 config: this.config_section,
-                keyboard_manager: undefined,
+                keyboard_manager: keyboard_manager,
                 notebook: this.notebook,
                 tooltip: undefined
             };
@@ -106,7 +112,7 @@ define(function(require) {
             var options = {
                 events: this.events,
                 config: this.config_section,
-                keyboard_manager: undefined,
+                keyboard_manager: keyboard_manager,
                 notebook: this.notebook,
                 tooltip: undefined
             };
