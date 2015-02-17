@@ -20,7 +20,7 @@ define(function (require) {
 
 
     var lastState = localStorage.getItem(storeKey);
-    lastState = undefined;
+    //lastState = undefined;
     if (lastState) {
         dockManager.loadState(lastState);
     }
