@@ -56,36 +56,27 @@ define(function (require) {
         var rr = dockManager.dockRight(documentNode, ph2, 0.20);
         dockManager.dockDown(rr, ph3, 0.30);
         dockManager.dockDown(rr, ph4, 0.30);
-
-        //     // Convert existing elements on the page into "Panels".
-    //     // They can then be docked on to the dock manager
-    //     // Panels get a titlebar and a close button, and can also be
-    //     // converted to a floating dialog box which can be dragged / resized
-    //     var solution = new dockspawn.PanelContainer(document.getElementById("solution_window"), dockManager);
-    //     var properties = new dockspawn.PanelContainer(document.getElementById("properties_window"), dockManager);
-    //     var toolbox = new dockspawn.PanelContainer(document.getElementById("toolbox_window"), dockManager);
-    //     var outline = new dockspawn.PanelContainer(document.getElementById("outline_window"), dockManager);
-    //     var problems = new dockspawn.PanelContainer(document.getElementById("problems_window"), dockManager);
-    //     var output = new dockspawn.PanelContainer(document.getElementById("output_window"), dockManager);
-    //     var editor1 = new dockspawn.PanelContainer(document.getElementById("editor1_window"), dockManager);
-    //     var editor2 = new dockspawn.PanelContainer(document.getElementById("editor2_window"), dockManager);
-    //     var infovis = new dockspawn.PanelContainer(document.getElementById("infovis"), dockManager);
-    //     var nb = new dockspawn.PanelContainer(document.getElementById("notebook_panel"), dockManager);
-
-    //     // Dock the panels on the dock manager
-    //     var documentNode = dockManager.context.model.documentManagerNode;
-    //     var outlineNode = dockManager.dockLeft(documentNode, outline, 0.15);
-    //     var solutionNode = dockManager.dockFill(outlineNode, solution);
-    //     var propertiesNode = dockManager.dockDown(outlineNode, properties, 0.6);
-    //     var outputNode = dockManager.dockDown(documentNode, output, 0.2);
-    //     var problemsNode = dockManager.dockRight(outputNode, problems, 0.40);
-    //     var toolboxNode = dockManager.dockRight(documentNode, toolbox, 0.20);
-    //     var editor1Node = dockManager.dockFill(documentNode, editor1);
-    //     var editor2Node = dockManager.dockFill(documentNode, editor2);
-    //     var infovisNode = dockManager.dockFill(documentNode, infovis);
-    //     dockManager.floatDialog(nb, 100, 100);
     }
 
+    var panels = dockManager.getPanels();
+    var navbar_win = $('#navbar_windows');
+    panels.forEach(function(p) {
+        $('<li><a href="#">' + p.title + '</a></li>')
+            .prependTo(navbar_win)
+            .on('click', function(c) {
+                console.log("Panel", p.title, " clicked");
+                if (dockManager.getVisiblePanels().indexOf(p) != -1) {
+                    console.log("Panel", p.title, " already visible");
+                } else {
+                    dockManager.floatDialog(p, 100, 100);
+                }
+            });
+    });
+
+    $('#windows_refresh').on('click', function(c) {
+        localStorage.setItem(storeKey, '');
+        location.reload();
+    });
 
     var myhack = new hm.HackMe('proto_kwik.ipynb', 'proto/proto_kwik.ipynb');
     myhack.start();
