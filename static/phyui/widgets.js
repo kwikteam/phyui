@@ -59,7 +59,6 @@ define(function(require) {
         add_cluster: function(i) {
             //return;
             var that = this;
-            console.log("<button/>");
             var cluster = $('<button>' + i.id.toString() + '</button>');
             cluster.addClass('phy-clusterview-cluster');
             //cluster.click(function () {
