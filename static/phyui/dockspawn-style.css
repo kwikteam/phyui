@@ -4,7 +4,7 @@
 }
 
 .panel-titlebar {
-	background-color: #333;
+	background-color: #F8F8F8;
 }
 
 .panel-titlebar-text {
@@ -75,11 +75,13 @@
 }
 
 .splitbar-horizontal {
-	background-color: #000000;
+	background-color: #e7e7e7;
+	height:3px;
 }
 
 .splitbar-vertical {
-	background-color: #000000;
+	background-color: #e7e7e7;
+	width:3px;
 }
 
 .splitbar-horizontal-ghoust{
@@ -104,17 +106,17 @@
 }*/
 
 .tab-handle {
-	background-color: #808080;
-	color:#D5D5D5;
+	background-color: #FDFDFD;
+	color:#777777;
 	box-shadow: 0px 5px 20px #000;
 }
 .tab-handle:hover {
-	background-color: #ffcc00;
-	color:#400;
+	/* background-color: #ffcc00; */
+	color:#000;
 }
 
 .tab-handle-selected {
-	background-color: #ffcc00;
+	background-color: #e7e7e7;
 	color:#400;
 }
 
@@ -129,11 +131,12 @@
 }
 
 .tab-handle-list-container {
-	background-color: #333;
+	background-color: #FFF;
 }
 
 .tab-handle-content-seperator {
-	background-color: #ffcc00;
+    background-color: #e7e7e7;
+    height: 3px;
 }
 
 /*************************** Text Selection **************************/
