@@ -76,12 +76,12 @@
 
 .splitbar-horizontal {
 	background-color: #e7e7e7;
-	height:3px;
+	height:2px;
 }
 
 .splitbar-vertical {
 	background-color: #e7e7e7;
-	width:3px;
+	width:2px;
 }
 
 .splitbar-horizontal-ghoust{
@@ -131,12 +131,12 @@
 }
 
 .tab-handle-list-container {
-	background-color: #FFF;
+	background-color: #F8F8F8;
 }
 
 .tab-handle-content-seperator {
     background-color: #e7e7e7;
-    height: 3px;
+    height: 1px;
 }
 
 /*************************** Text Selection **************************/
