@@ -42,7 +42,8 @@ define(function (require) {
         onResumeLayout:function(self)                      {localStorage.setItem(storeKey, dockManager.saveState());},
         onClosePanel:function(self, panel)                 {localStorage.setItem(storeKey, dockManager.saveState());},
         onHideDialog:function(self, dialog)                {localStorage.setItem(storeKey, dockManager.saveState());},
-        onShowDialog:function(self, dialog)                {localStorage.setItem(storeKey, dockManager.saveState());}
+        onShowDialog:function(self, dialog)                {localStorage.setItem(storeKey, dockManager.saveState());},
+        onTabsReorder:function(self, dockNone)             {localStorage.setItem(storeKey, dockManager.saveState());}
     });
 
     if (!lastState) {
