@@ -78,7 +78,25 @@ define(function (require) {
         location.reload();
     });
 
-    var myhack = new hm.HackMe('proto_kwik.ipynb', 'proto/proto_kwik.ipynb');
+    function GetURLParameter(sParam)
+    {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++)
+        {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam)
+            {
+                return sParameterName[1];
+            }
+        }
+    }
+
+    var notebook_name = GetURLParameter('notebook_name');
+    var notebook_path = GetURLParameter('notebook_path');
+    console.log('Connecting to name:', notebook_name, ' path:', notebook_path);
+    //
+    var myhack = new hm.HackMe(notebook_name, notebook_path);
     myhack.start();
     var events = require('base/js/events');
 
