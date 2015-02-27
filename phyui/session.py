@@ -7,10 +7,9 @@
 #------------------------------------------------------------------------------
 
 from phyui.plot.waveforms import WaveformView
-from phyui.cluster_view import ClusterView
+from phyui.cluster_view import ClusterView, cluster_info
 from phy.cluster.manual.session import Session
-from phyui.utils import enable_notebook
-
+from phyui.utils import enable_notebook, load_css
 
 class UISession(Session):
     """Default manual clustering session in the IPython notebook.
@@ -83,7 +82,7 @@ class UISession(Session):
         try:
             #view = ClusterView(clusters=self.clustering.cluster_ids,
             #                   colors=cluster_colors)
-            clusters = [ cluster_info(c, quality=0, nchannels=1, nspikes=2, ccg=None) for c in session.clustering.cluster_labels]
+            clusters = [ cluster_info(c, quality=0, nchannels=1, nspikes=2, ccg=None) for c in self.clustering.cluster_ids ]
             view = ClusterView(clusters=clusters, colors=cluster_colors)
             self.view = view
         except RuntimeError:

@@ -24,7 +24,7 @@ def _to_abs_path(path):
     return op.join(root, path)
 
 def _to_web(path):
-    current_directory = os.path.join(op.dirname(op.realpath(__file__)), "..", "..")
+    current_directory = os.path.join(op.dirname(op.realpath(__file__)), "..")
     return op.relpath(_to_abs_path(path), current_directory)
 
 

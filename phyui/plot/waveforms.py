@@ -15,9 +15,9 @@ from vispy.visuals import Visual
 from vispy.visuals.shaders import ModularProgram, Function, Variable
 from vispy.visuals.glsl.color import HSV_TO_RGB, RGB_TO_HSV
 
-from ..utils.array import _unique, _as_array, _index_of, _normalize
+from phy.utils.array import _unique, _as_array, _index_of, _normalize
 from ._vispy_utils import PanZoomCanvas
-from ..utils.logging import debug
+from phy.utils.logging import debug
 
 
 #------------------------------------------------------------------------------

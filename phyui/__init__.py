@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .utils import default_logger
+from phy.utils import default_logger
 
 __author__ = 'Kwik Team'
 __email__ = 'cyrille.rossant at gmail.com'
