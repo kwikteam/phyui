@@ -1,3 +1,6 @@
+FLAKE8 ?= flake8
+PYLINT ?= pylint2
+
 help:
 	@echo "clean - remove all build, test, coverage and Python artifacts"
 	@echo "clean-build - remove build artifacts"
@@ -21,7 +24,7 @@ clean-pyc:
 	find . -name '__pycache__' -exec rm -fr {} +
 
 lint:
-	flake8 phy --exclude=phy/ext/* --ignore=E226,E265,F401,F811
+	${FLAKE8} phy --exclude=phy/ext/* --ignore=E226,E265,F401,F811
 
 test: lint
 	py.test --cov-report term-missing --cov phy
@@ -34,3 +37,14 @@ dist: clean
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
+
+pylint-full:
+	@echo ":: Running pylint: phyui"
+	@${PYLINT} --rcfile pylint.rc phyui 2>&1 || exit 1 || exit 0
+
+pylint-error:
+	@echo ":: Running pylint --errors-only: phyui"
+	@${PYLINT} --errors-only --rcfile pylint.rc phyui 2>&1 || \
+		exit 1 || exit 0
+	@echo " => Checked only for pylint errors"
+	@echo "    Use make check-all for running a full pylint check"
