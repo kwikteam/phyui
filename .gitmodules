@@ -1,0 +1,4 @@
+[submodule "dockspawn"]
+	path = static/phyui/dock-spawn
+	url = http://github.com/kwikteam/dock-spawn
+	branch = master
