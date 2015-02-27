@@ -9,7 +9,7 @@
 from phyui.plot.waveforms import WaveformView
 from phyui.cluster_view import ClusterView, cluster_info
 from phy.cluster.manual.session import Session
-from phyui.utils import enable_notebook, load_css
+from phyui.utils import enable_notebook
 
 class UISession(Session):
     """Default manual clustering session in the IPython notebook.
@@ -90,8 +90,6 @@ class UISession(Session):
             return
         view.on_trait_change(lambda _, __, clusters: self.select(clusters),
                              'value')
-        load_css('static/d3clusterwidget.css')
-        load_css('static/widgets.css')
         from IPython.display import display
         display(view)
         return view
