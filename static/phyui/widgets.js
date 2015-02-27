@@ -5,8 +5,8 @@
 define(function(require) {
     widget = require('widgets/js/widget');
     manager = require('widgets/js/manager');
-    clusterwidget = require('/nbextensions/phy/static/d3clusterwidget.js');
-    require('/nbextensions/phy/static/utils.js');
+    clusterwidget = require('/nbextensions/phyui/d3clusterwidget.js');
+    require('/nbextensions/phyui/utils.js');
 
     // Utility functions
     // ------------------------------------------------------------------------
