@@ -23,6 +23,10 @@ def _to_abs_path(path):
     root = op.join(current_directory, '../')
     return op.join(root, path)
 
+def _to_web(path):
+    current_directory = os.path.join(op.dirname(op.realpath(__file__)), "..", "..")
+    return op.relpath(_to_abs_path(path), current_directory)
+
 
 def _read_file(path):
     """Read a text file specified with an absolute path."""
@@ -30,7 +34,7 @@ def _read_file(path):
         return f.read()
 
 
-def _inject_js(path):
+def _inject_js(path, async=True):
     """Inject a JS file in the notebook.
 
     Parameters
@@ -40,7 +44,11 @@ def _inject_js(path):
         Absolute path to a .js file.
 
     """
-    display_javascript(_read_file(path), raw=True)
+    if async:
+        myjs = "$('head').append(\"<script> require(['/nbextensions/" + _to_web(path) + "']); </script>\")"
+    else:
+        myjs = "$('head').append(\"<script type='text/javascript' src='/nbextensions/" + _to_web(path) + "'/>\")"
+    display_javascript(myjs, raw=True)
 
 
 def _inject_css(path):
@@ -53,10 +61,15 @@ def _inject_css(path):
         Absolute path to a .css file.
 
     """
-    css = _read_file(path)
-    html = '<style type="text/css">\n{0:s}\n</style>'.format(css)
-    display_html(html, raw=True)
+    #inject in head so it does not disappear with the outputarea
+    mycss = '$("head").append(\'<link rel="stylesheet" href="/nbextensions/' + _to_web(path) + '" type="text/css"/>\')'
+    display_javascript(mycss, raw=True)
 
+
+def load_js(path, async=False):
+    """Load a CSS file specified with a path relative to the root
+    of the phy module."""
+    _inject_js(_to_abs_path(path), require=require)
 
 def load_css(path):
     """Load a CSS file specified with a path relative to the root
