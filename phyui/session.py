@@ -6,17 +6,11 @@
 # Imports
 #------------------------------------------------------------------------------
 
-import os
-import os.path as op
-from functools import partial
-import shutil
-
-import numpy as np
-
-from .cluster_info import ClusterMetadata
-from .store import ClusterStore, StoreItem
-from phy-ui.plot.waveforms import WaveformView
+from phyui.plot.waveforms import WaveformView
+from phyui.cluster_view import ClusterView
 from phy.cluster.manual.session import Session
+from phyui.utils import enable_notebook
+
 
 class UISession(Session):
     """Default manual clustering session in the IPython notebook.
@@ -32,7 +26,7 @@ class UISession(Session):
 
     """
     def __init__(self, store_path=None, backend=None):
-        super(Session, self).__init__(store_path, backend)
+        super(UISession, self).__init__(store_path, backend)
 
     def show_waveforms(self):
         if self._backend in ('pyqt4', None):
@@ -97,6 +91,7 @@ class UISession(Session):
             return
         view.on_trait_change(lambda _, __, clusters: self.select(clusters),
                              'value')
+        load_css('static/d3clusterwidget.css')
         load_css('static/widgets.css')
         from IPython.display import display
         display(view)
@@ -123,7 +118,7 @@ def start_manual_clustering(filename=None, model=None, session=None,
     """
 
     if session is None:
-        session = Session(store_path=store_path, backend=backend)
+        session = UISession(store_path=store_path, backend=backend)
 
     # Enable the notebook interface.
     enable_notebook(backend=backend)
