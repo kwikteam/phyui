@@ -8,4 +8,4 @@ This is a WIP data analysis framework for large-scale electrophysiological data.
 ## How to install
 Install the IPython nbextension using:
 
-    ipython install-nbextension --symlink phy --user
+    ipython install-nbextension --symlink static/phyui
