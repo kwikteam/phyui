@@ -9,6 +9,7 @@ define(function (require) {
     var dockId = 0;
 
     var hm = require('/nbextensions/phy/static/notebooksession.js');
+    var kind = require('/nbextensions/phy/static/kernel_indicator.js');
 
     var storeKey = 'manual_clustering_dockspawn_layout_state';
 
@@ -110,4 +111,5 @@ define(function (require) {
         myhack.create_cell('#placeholder3', "from phy.cluster.manual.interface import start_manual_clustering; session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
         myhack.create_cell('#placeholder4');
     });
+    kind.initKernelIndicator();
 });
