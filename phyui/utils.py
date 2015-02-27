@@ -77,17 +77,6 @@ def load_css(path):
     _inject_css(_to_abs_path(path))
 
 
-def load_static(js=True, css=False):
-    """Load all JS and CSS files in the 'static/' folder."""
-    static_dir = _to_abs_path('static/')
-    files = os.listdir(static_dir)
-    for file in files:
-        if css and op.splitext(file)[1] == '.css':
-            _inject_css(op.join(static_dir, file))
-        if js and op.splitext(file)[1] == '.js':
-            _inject_js(op.join(static_dir, file))
-
-
 #------------------------------------------------------------------------------
 # Event loop integration
 #------------------------------------------------------------------------------
@@ -141,5 +130,3 @@ def enable_notebook(backend=None):
             _enable_gui(shell, 'qt')
         elif backend == 'wx':
             _enable_gui(shell, 'wx')
-    # Load static JS and CSS files.
-    load_static()
