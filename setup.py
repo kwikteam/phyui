@@ -19,7 +19,7 @@ test_requirements = [
 ]
 
 setup(
-    name='phy',
+    name='phy-ui',
     version='0.1.0-alpha',
     description='Electrophysiological data analysis.',
     long_description=readme,
@@ -27,10 +27,10 @@ setup(
     author_email='cyrille.rossant at gmail.com',
     url='https://github.com/kwikteam/phy',
     packages=[
-        'phy',
+        'phy-ui',
     ],
-    package_dir={'phy':
-                 'phy'},
+    package_dir={'phy-ui':
+                 'phy-ui'},
     include_package_data=True,
     install_requires=requirements,
     license="BSD",
