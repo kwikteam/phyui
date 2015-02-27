@@ -4,12 +4,12 @@ define(function (require) {
     var IPython = require('base/js/namespace');
     var $ = require('jquery');
     //var events = require("base/js/events");
-    var dockspawn = require('/nbextensions/phy/static/dock-spawn/dist/js/dockspawn.js');
+    var dockspawn = require('/nbextensions/phyui/dock-spawn/dist/js/dockspawn.js');
     //var codecell = require('notebook/js/codecell');
     var dockId = 0;
 
-    var hm = require('/nbextensions/phy/static/notebooksession.js');
-    var kind = require('/nbextensions/phy/static/kernel_indicator.js');
+    var hm = require('/nbextensions/phyui/notebooksession.js');
+    var kind = require('/nbextensions/phyui/kernel_indicator.js');
 
     var storeKey = 'manual_clustering_dockspawn_layout_state';
 
