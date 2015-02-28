@@ -38,7 +38,7 @@ define(function(require) {
         render: function(){
             var that = this;
             this.$el.addClass('cluster-container');
-            this.mydiv = $("<div id='cv' style='width: 100%; background-color: #ede;'/>");
+            this.mydiv = $("<div id='cv' style='width: 100%;'/>");
             this.mydiv.appendTo(this.$el);
 
             this.clusterd3 = new clusterwidget.D3ClusterWidget(this.mydiv[0], ['id', 'quality', 'nspikes']);
