@@ -89,8 +89,10 @@ class UISession(Session):
         except RuntimeError:
             warn("The cluster view only works in IPython.")
             return
-        view.on_trait_change(lambda _, __, clusters: self.select(clusters),
-                             'value')
+        def onSelect(_, __, clusters):
+            print "clusters:", clusters
+            self.select([int(x) for x in clusters])
+        view.on_trait_change(onSelect, 'value')
         from IPython.display import display
         display(view)
         return view
