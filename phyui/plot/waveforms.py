@@ -148,7 +148,7 @@ class Waveforms(Visual):
         assert value.ndim == 3
         self.n_spikes, self.n_samples, self.n_channels = value.shape
         self._waveforms = value
-        self.set_to_bake('spikes', 'spikes_clusters', 'color')
+        self.set_to_bake('spikes', 'spikes_clusters', 'metadata')
 
     @property
     def masks(self):
@@ -181,6 +181,17 @@ class Waveforms(Visual):
         self.set_to_bake('spikes')
 
     @property
+    def cluster_metadata(self):
+        """A ClusterMetadata instance that holds information about all
+        clusters."""
+        return self._cluster_metadata
+
+    @cluster_metadata.setter
+    def cluster_metadata(self, value):
+        self._cluster_metadata = value
+        self.set_to_bake('metadata')
+
+    @property
     def channel_positions(self):
         """Array with the coordinates of all channels."""
         return self._channel_positions
@@ -203,12 +214,9 @@ class Waveforms(Visual):
     @property
     def cluster_colors(self):
         """Colors of the displayed clusters."""
-        return self._cluster_colors
-
-    @cluster_colors.setter
-    def cluster_colors(self, value):
-        self._cluster_colors = value
-        self.set_to_bake('color')
+        clusters = self.cluster_ids
+        return np.array([self._cluster_metadata.color(cluster)
+                         for cluster in clusters])
 
     @property
     def box_scale(self):
@@ -223,7 +231,7 @@ class Waveforms(Visual):
     # Data baking
     # -------------------------------------------------------------------------
 
-    def _bake_color(self):
+    def _bake_metadata(self):
         u_cluster_color = self.cluster_colors.reshape((1, self.n_clusters, -1))
         u_cluster_color = (u_cluster_color * 255).astype(np.uint8)
         # TODO: more efficient to update the data from an existing texture
