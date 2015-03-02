@@ -43,50 +43,19 @@ define(function(require) {
 
             this.clusterd3 = new clusterwidget.D3ClusterWidget(this.mydiv[0], ['id', 'quality', 'nspikes']);
             this.clusterd3.onSelected = this.update_selection.bind(that); //we want this in update_selection to be ... that
-            this._clusters = [];
 
             this.model.on('change:clusters',
                           this.clusters_changed, this);
             this.clusters_changed();
-
-            this.clusterd3.redraw(this.model.get('clusters'));
-
-            this.model.on('change:colors',
-                          this.colors_changed, this);
-            this.colors_changed();
         },
 
         add_cluster: function(i) {
-            //return;
-            var that = this;
-            var cluster = $('<button>' + i.id.toString() + '</button>');
-            cluster.addClass('phy-clusterview-cluster');
-            //cluster.click(function () {
-            //    that.model.set('value', [parseInt(i)]);
-            //    that.touch();
-            //});
-            this._clusters.push(cluster);
-            this.$el.append(cluster);
             this.clusterd3.redraw(this.model.get('clusters'));
         },
 
         clusters_changed: function() {
-            var clusters = this.model.get('clusters');
-            this.$el.find(".phy-clusterview-cluster").remove(); //empty();
-            this._clusters = [];
-            for (var i = 0; i < clusters.length; i++) {
-                this.add_cluster(clusters[i]);
-            }
             this.clusterd3.redraw(this.model.get('clusters'));
         },
-
-        colors_changed: function() {
-            var colors = this.model.get('colors');
-            for (var i = 0; i < colors.length; i++) {
-                var color = _parse_color(colors[i]);
-                //this._clusters[i].css('background-color', color);
-             }
-        }
     });
 
     console.log("### registering the view");
