@@ -32,6 +32,7 @@ class UISession(Session):
             kwargs = {'always_on_top': True}
         else:
             kwargs = {}
+        kwargs['resizable'] = False;
         view = WaveformView(**kwargs)
 
         @self.connect

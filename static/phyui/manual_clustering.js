@@ -104,10 +104,25 @@ define(function (require) {
 
     events.on('kernel_connected.Kernel', function(){
         console.log('session done');
-        myhack.create_result_cell('#placeholder1', "from phyui.session import start_manual_clustering; session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
-        myhack.create_result_cell('#placeholder2', "import vispy; \
-                                                    vispy.app.use_app('ipynb_webgl'); \
-                                                    w = session.show_waveforms()");
+        myhack.create_result_cell('#placeholder1', "from phyui.session import start_manual_clustering; \
+                                                    session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
+        var cc = myhack.create_result_cell('#placeholder2', "import vispy; \
+                                                             vispy.app.use_app('ipynb_webgl'); \
+                                                             w = session.show_waveforms()");
+
+        //bind the dockspawn resizeHandler event to vispy
+        $('#placeholder2')[0].resizeHandler = function(x, y) {
+                console.log("resize handler create_cell", x, "x", y);
+            // cc.element.find('.widget-subarea').find("canvas").css('height', y - 20);
+            try {
+                cc.element.find('.widget-subarea div')[0].resizeHandler(x - 10, y - 10);
+            } catch(err) {
+                //the element is not always defined..
+                //console.log("resizeHandler placeholder2 err:", err);
+            }
+        }
+
+
         myhack.create_cell('#placeholder3', "from phy.cluster.manual.interface import start_manual_clustering; session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
         myhack.create_cell('#placeholder4');
     });
