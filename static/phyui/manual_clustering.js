@@ -111,6 +111,11 @@ define(function (require) {
 
 
     events.on('kernel_connected.Kernel', function(){
+        $('#placeholder1').children().remove();
+        $('#placeholder2').children().remove();
+        $('#placeholder3').children().remove();
+        $('#placeholder4').children().remove();
+
         console.log('session done');
         myhack.create_result_cell('#placeholder1', "from phyui.session import start_manual_clustering; \
                                                     session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
