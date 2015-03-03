@@ -75,6 +75,8 @@ define(function (require) {
             });
     });
 
+
+
     $('#windows_refresh').on('click', function(c) {
         localStorage.setItem(storeKey, '');
         location.reload();
@@ -100,7 +102,13 @@ define(function (require) {
     //
     var myhack = new hm.HackMe(notebook_name, notebook_path);
     myhack.start();
+    $('#restart_kernel').on('click', function(c) {
+        myhack.session.kernel.restart();
+    });
+
+
     var events = require('base/js/events');
+
 
     events.on('kernel_connected.Kernel', function(){
         console.log('session done');
