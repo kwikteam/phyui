@@ -21,7 +21,7 @@ def _genccg():
     bins[0] = 0
     bins[nbins] = 0
 
-    for i in range(1, nbins/2):
+    for i in range(1, nbins//2):
         binval = random.randint(0,120)
         bins[i] = binval
         bins[nbins-i] = binval

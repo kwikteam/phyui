@@ -6,9 +6,10 @@
 # Imports
 #------------------------------------------------------------------------------
 
-from phyui.plot.waveforms import WaveformView
-from phyui.cluster_view import ClusterView, cluster_info
+from phy.plot.waveforms import WaveformView, add_waveform_view
 from phy.cluster.manual.session import Session
+
+from phyui.cluster_view import ClusterView, cluster_info
 from phyui.utils import enable_notebook
 
 class UISession(Session):
@@ -24,73 +25,30 @@ class UISession(Session):
         VisPy backend. For example 'pyqt4' or 'ipynb_webgl'.
 
     """
-    def __init__(self, store_path=None, backend=None):
-        super(UISession, self).__init__(store_path, backend)
+    def __init__(self, store_path=None):
+        super(UISession, self).__init__(store_path=store_path)
+        self.action(self.show_waveforms, "Show waveforms")
 
     def show_waveforms(self):
-        if self._backend in ('pyqt4', None):
-            kwargs = {'always_on_top': True}
-        else:
-            kwargs = {}
-        kwargs['resizable'] = False;
-        view = WaveformView(**kwargs)
-
-        @self.connect
-        def on_open():
-            if self.model is None:
-                return
-            view.visual.spike_clusters = self.clustering.spike_clusters
-            view.visual.cluster_metadata = self.cluster_metadata
-            view.visual.channel_positions = self.model.probe.positions
-            view.update()
-
-        @self.connect
-        def on_cluster(up=None):
-            pass
-            # TODO: select the merged cluster
-            # self.select(merged)
-
-        @self.connect
-        def on_select():
-            spikes = self.selector.selected_spikes
-            if len(spikes) == 0:
-                return
-            view.visual.waveforms = self.model.waveforms[spikes]
-            view.visual.masks = self.model.masks[spikes]
-            view.visual.spike_ids = spikes
-            view.update()
-
-        # Unregister the callbacks when the view is closed.
-        @view.connect
-        def on_close(event):
-            self.unconnect(on_open, on_cluster, on_select)
-
-        view.show()
-
-        # Update the view if the model was already opened.
-        on_open()
-        on_select()
-
+        view = add_waveform_view(self, backend='ipynb_webgl')
         return view
 
     def show_clusters(self):
         """Create and show a new cluster view."""
 
-        # TODO: no more 1 cluster = 1 color, use a fixed set of colors
-        # for the selected clusters.
-        cluster_colors = [self.cluster_metadata.color(cluster)
+        cluster_colors = [(1., 0., 0.)
                           for cluster in self.clustering.cluster_ids]
         try:
             #view = ClusterView(clusters=self.clustering.cluster_ids,
             #                   colors=cluster_colors)
             clusters = [ cluster_info(c, quality=0, nchannels=1, nspikes=2, ccg=None) for c in self.clustering.cluster_ids ]
             view = ClusterView(clusters=clusters, colors=cluster_colors)
-            self.view = view
+            # self.view = view
         except RuntimeError:
             warn("The cluster view only works in IPython.")
             return
         def onSelect(_, __, clusters):
-            print "clusters:", clusters
+            print("clusters:", clusters)
             self.select([int(x) for x in clusters])
         view.on_trait_change(onSelect, 'value')
         from IPython.display import display
@@ -118,7 +76,7 @@ def start_manual_clustering(filename=None, model=None, session=None,
     """
 
     if session is None:
-        session = UISession(store_path=store_path, backend=backend)
+        session = UISession(store_path=store_path)
 
     # Enable the notebook interface.
     enable_notebook(backend=backend)
