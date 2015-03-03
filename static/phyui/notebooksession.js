@@ -72,7 +72,7 @@ define(function(require) {
                 ws_url: this.ws_url,
                 notebook_path: this.notebook_path,
                 notebook_name: this.notebook_name,
-                kernel_name: 'python2',
+                kernel_name: 'python3',
                 notebook: this.notebook //TODO: remove
             };
 
