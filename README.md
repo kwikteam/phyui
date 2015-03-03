@@ -5,6 +5,8 @@
 
 This is a WIP data analysis framework for large-scale electrophysiological data. The primary focus is on multielectrode extracellular recordings: raw data, LFP, spike sorting, and post-sorting analyses. The scope may be expanded later on.
 
+You need IPython >= 3.0
+
 ## How to install
 Install the IPython extension:
     python setup.py install
@@ -14,4 +16,4 @@ or if you want to develop and only create symlinks to your source directory:
 
 Install the IPython nbextension using:
 
-    ipython install-nbextension --symlink static/phyui
+    ipython install-nbextension --symlink static/phyui --user
