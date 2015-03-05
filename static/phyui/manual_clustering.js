@@ -8,8 +8,8 @@ define(function (require) {
     //var codecell = require('notebook/js/codecell');
     var dockId = 0;
 
-    var hm = require('/nbextensions/phyui/notebooksession.js');
-    var kind = require('/nbextensions/phyui/kernel_indicator.js');
+    var hm = require('/nbextensions/phyui/ipython/notebooksession.js');
+    var kind = require('/nbextensions/phyui/ipython/kernel_indicator.js');
 
     var storeKey = 'manual_clustering_dockspawn_layout_state';
 

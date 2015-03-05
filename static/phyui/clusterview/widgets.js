@@ -4,9 +4,8 @@
 
 define(function(require) {
     widget = require('widgets/js/widget');
-    manager = require('widgets/js/manager');
-    clusterwidget = require('/nbextensions/phyui/d3clusterwidget.js');
-    require('/nbextensions/phyui/utils.js');
+    clusterwidget = require('/nbextensions/phyui/clusterview/d3clusterwidget.js');
+    require('/nbextensions/phyui/ipython/utils.js');
 
     // Utility functions
     // ------------------------------------------------------------------------
@@ -57,10 +56,6 @@ define(function(require) {
             this.clusterd3.redraw(this.model.get('clusters'));
         },
     });
-
-    console.log("### registering the view");
-    manager.WidgetManager.register_widget_view('ClusterWidget',
-                                               ClusterWidget);
 
     return { 'ClusterWidget' : ClusterWidget };
 });
