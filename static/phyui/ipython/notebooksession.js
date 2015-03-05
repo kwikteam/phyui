@@ -38,7 +38,7 @@ define(function(require) {
         };
     };
 
-    var HackMe = function(nbname, nbpath) {
+    var HackMe = function(nbname, nbpath, kernel) {
         this.notebook_name = nbname;
         this.notebook_path = nbpath;
         this.base_url = '/';
@@ -72,7 +72,7 @@ define(function(require) {
                 ws_url: this.ws_url,
                 notebook_path: this.notebook_path,
                 notebook_name: this.notebook_name,
-                kernel_name: 'python2',
+                kernel_name: kernel,
                 notebook: this.notebook //TODO: remove
             };
 

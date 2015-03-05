@@ -1,6 +1,29 @@
 define(function (require) {
     "use strict";
 
+        function GetURLParameter(sParam)
+    {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++)
+        {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam)
+            {
+                return sParameterName[1];
+            }
+        }
+    }
+
+    var notebook_name = GetURLParameter('notebook_name');
+    var notebook_path = GetURLParameter('notebook_path');
+    var kernel = GetURLParameter('kernel') || 'python2';
+    var filename = GetURLParameter('filename');
+
+    console.log('Connecting to name:', notebook_name, ' path:', notebook_path, ' kernel:', kernel, ' filename:', filename);
+
+
+
     var IPython = require('base/js/namespace');
     var $ = require('jquery');
     //var events = require("base/js/events");
@@ -82,25 +105,8 @@ define(function (require) {
         location.reload();
     });
 
-    function GetURLParameter(sParam)
-    {
-        var sPageURL = window.location.search.substring(1);
-        var sURLVariables = sPageURL.split('&');
-        for (var i = 0; i < sURLVariables.length; i++)
-        {
-            var sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] == sParam)
-            {
-                return sParameterName[1];
-            }
-        }
-    }
-
-    var notebook_name = GetURLParameter('notebook_name');
-    var notebook_path = GetURLParameter('notebook_path');
-    console.log('Connecting to name:', notebook_name, ' path:', notebook_path);
     //
-    var myhack = new hm.HackMe(notebook_name, notebook_path);
+    var myhack = new hm.HackMe(notebook_name, notebook_path, kernel);
     myhack.start();
     $('#restart_kernel').on('click', function(c) {
         myhack.session.kernel.restart();
@@ -118,10 +124,9 @@ define(function (require) {
 
         console.log('session done');
         myhack.create_result_cell('#placeholder1', "from phyui.session import start_manual_clustering; \
-                                                    session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
-        var cc = myhack.create_result_cell('#placeholder2', "import vispy; \
-                                                             vispy.app.use_app('ipynb_webgl'); \
-                                                             w = session.show_waveforms(); w.show()");
+                                                    session = start_manual_clustering('" + filename + "', backend='ipynb_webgl'); \
+                                                    session.show_clusters();");
+        var cc = myhack.create_result_cell('#placeholder2', "w = session.show_waveforms(); w.show()");
 
         //bind the dockspawn resizeHandler event to vispy
         $('#placeholder2')[0].resizeHandler = function(x, y) {
