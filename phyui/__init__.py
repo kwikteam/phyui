@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-from phy.utils import default_logger
 
 __author__ = 'Kwik Team'
 __email__ = 'cyrille.rossant at gmail.com'
 __version__ = '0.1.0-alpha'
-
-# Set up the default logger.
-default_logger()
 
 
 def prepare_js():
@@ -14,7 +10,6 @@ def prepare_js():
     """
     from IPython.html import nbextensions
     import os
-    pkgdir = os.path.dirname(__file__)
-    nbextensions.install_nbextension(pkgdir, symlink=True, user=True, destination='phy')
+    pkgdir = os.path.join(os.path.dirname(__file__), "..", "static", "phyui")
+    nbextensions.install_nbextension(pkgdir, symlink=True, user=True, destination='phyui')
 
-#prepare_js()

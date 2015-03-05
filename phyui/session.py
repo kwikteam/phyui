@@ -8,9 +8,7 @@
 
 from phy.plot.waveforms import WaveformView, add_waveform_view
 from phy.cluster.manual.session import Session
-
 from phyui.cluster_view import ClusterView, cluster_info
-from phyui.utils import enable_notebook
 
 class UISession(Session):
     """Default manual clustering session in the IPython notebook.
@@ -61,7 +59,7 @@ class UISession(Session):
 #------------------------------------------------------------------------------
 
 def start_manual_clustering(filename=None, model=None, session=None,
-                            store_path=None, backend=None):
+                            store_path=None):
     """Start a manual clustering session in the IPython notebook.
 
     Parameters
@@ -77,6 +75,8 @@ def start_manual_clustering(filename=None, model=None, session=None,
 
     if session is None:
         session = UISession(store_path=store_path)
+
+    vispy.app.use_app('ipynb_webgl');
 
     # Enable the notebook interface.
     enable_notebook(backend=backend)
