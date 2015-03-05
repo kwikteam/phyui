@@ -13,3 +13,4 @@ def prepare_js():
     pkgdir = os.path.join(os.path.dirname(__file__), "..", "static", "phyui")
     nbextensions.install_nbextension(pkgdir, symlink=True, user=True, destination='phyui')
 
+prepare_js()
