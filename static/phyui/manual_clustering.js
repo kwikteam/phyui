@@ -141,7 +141,7 @@ define(function (require) {
         }
 
 
-        myhack.create_cell('#placeholder3', "from phy.cluster.manual.interface import start_manual_clustering; session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
+        myhack.create_cell('#placeholder3');
         myhack.create_cell('#placeholder4');
     });
     kind.initKernelIndicator();
