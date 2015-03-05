@@ -124,6 +124,4 @@ def start_manual_clustering(filename=None, model=None, session=None,
     enable_notebook(backend=backend)
 
     session.open(filename=filename, model=model)
-    session.show_clusters()
-
     return session
