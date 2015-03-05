@@ -12,12 +12,16 @@ define(function(require) {
     var configmod = require('services/config');
     var actions = require('notebook/js/actions');
     var keyboardmanager = require('notebook/js/keyboardmanager');
+    var tp = require('notebook/js/tooltip');
+
+    var tooltip = new tp.Tooltip(events);
 
     var acts = new actions.init();
     var keyboard_manager = new keyboardmanager.KeyboardManager({
         pager: undefined, //is that needed?
         events: events,
         actions: acts });
+    keyboard_manager.edit_mode(); //force edit_mode. we dont care about command mode. (focus handling is somehow made by the notebook we dont have)
 
     console.log("loading ... in progress");
 
@@ -93,9 +97,8 @@ define(function(require) {
                 config: this.config_section,
                 keyboard_manager: keyboard_manager,
                 notebook: this.notebook,
-                tooltip: undefined
+                tooltip: tooltip
             };
-
             var cc = new codecell.CodeCell(this.session.kernel, options);
             cc.set_text(codetorun || '');
             var btn = $('<input type="button" id="field" value="Execute"/>');
@@ -114,7 +117,7 @@ define(function(require) {
                 config: this.config_section,
                 keyboard_manager: keyboard_manager,
                 notebook: this.notebook,
-                tooltip: undefined
+                tooltip: tooltip
             };
 
             var cc = new codecell.CodeCell(this.session.kernel, options);
