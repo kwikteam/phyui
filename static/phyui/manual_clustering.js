@@ -121,7 +121,7 @@ define(function (require) {
                                                     session = start_manual_clustering('/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik', backend='ipynb_webgl')");
         var cc = myhack.create_result_cell('#placeholder2', "import vispy; \
                                                              vispy.app.use_app('ipynb_webgl'); \
-                                                             w = session.show_waveforms()");
+                                                             w = session.show_waveforms(); w.show()");
 
         //bind the dockspawn resizeHandler event to vispy
         $('#placeholder2')[0].resizeHandler = function(x, y) {
