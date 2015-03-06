@@ -130,7 +130,7 @@ define(function (require) {
 
         //bind the dockspawn resizeHandler event to vispy
         $('#placeholder2')[0].resizeHandler = function(x, y) {
-                console.log("resize handler create_cell", x, "x", y);
+                //console.log("resize handler create_cell", x, "x", y);
             // cc.element.find('.widget-subarea').find("canvas").css('height', y - 20);
             try {
                 cc.element.find('.widget-subarea div')[0].resizeHandler(x - 10, y - 10);

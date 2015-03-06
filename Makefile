@@ -24,7 +24,7 @@ clean-pyc:
 	find . -name '__pycache__' -exec rm -fr {} +
 
 lint:
-	${FLAKE8} phy --exclude=phy/ext/* --ignore=E226,E265,F401,F811
+	${FLAKE8} phyui --ignore=E226,E265,F401,F811
 
 test: lint
 	py.test --cov-report term-missing --cov phy
