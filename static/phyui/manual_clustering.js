@@ -124,7 +124,7 @@ define(function (require) {
 
         console.log('session done');
         myhack.create_result_cell('#placeholder1', "from phyui.session import start_manual_clustering; \
-                                                    session = start_manual_clustering('" + filename + "', backend='ipynb_webgl'); \
+                                                    session = start_manual_clustering('" + filename + "'); \
                                                     session.show_clusters();");
         var cc = myhack.create_result_cell('#placeholder2', "w = session.show_waveforms(); w.show()");
 
