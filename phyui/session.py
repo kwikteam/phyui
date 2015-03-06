@@ -38,17 +38,10 @@ class UISession(Session):
 
         cluster_colors = [(1., 0., 0.)
                           for cluster in self.clustering.cluster_ids]
-        try:
-            #view = ClusterView(clusters=self.clustering.cluster_ids,
-            #                   colors=cluster_colors)
-            clusters = [ cluster_info(c, quality=0, nchannels=1, nspikes=2, ccg=None) for c in self.clustering.cluster_ids ]
-            view = ClusterView(clusters=clusters, colors=cluster_colors)
-            # self.view = view
-        except RuntimeError:
-            warn("The cluster view only works in IPython.")
-            return
+        clusters = [ cluster_info(c, quality=0, nchannels=1, nspikes=2, ccg=None) for c in self.clustering.cluster_ids ]
+        view = ClusterView(clusters=clusters, colors=cluster_colors)
+
         def onSelect(_, __, clusters):
-            print("clusters:", clusters)
             self.select([int(x) for x in clusters])
         view.on_trait_change(onSelect, 'value')
         from IPython.display import display
@@ -78,7 +71,7 @@ def start_manual_clustering(filename=None, model=None, session=None,
     if session is None:
         session = UISession(store_path=store_path)
 
-    vispy.app.use_app('ipynb_webgl');
+    vispy.app.use_app('ipynb_webgl')
 
     session.open(filename=filename, model=model)
     return session
