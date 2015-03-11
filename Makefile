@@ -27,7 +27,7 @@ lint:
 	${FLAKE8} phyui --ignore=E226,E265,F401,F811
 
 test: lint
-	py.test --cov-report term-missing --cov phy
+	py.test --cov-report term-missing --cov phyui
 
 release: clean
 	python setup.py sdist upload

@@ -41,7 +41,9 @@ class UISession(Session):
         # TODO: use the model instead
         cluster_colors = [(1., 0., 0.)
                           for cluster in self.clustering.cluster_ids]
-        clusters = [ cluster_info(c, quality=0, nchannels=1, nspikes=2, ccg=None) for c in self.clustering.cluster_ids ]
+        clusters = [cluster_info(c, quality=0, nchannels=1,
+                                 nspikes=2, ccg=None)
+                    for c in self.clustering.cluster_ids]
         view = ClusterView(clusters=clusters, colors=cluster_colors)
 
         def on_select(_, __, clusters):

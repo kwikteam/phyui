@@ -40,7 +40,7 @@ def cluster_info(clusterid, quality, nchannels, nspikes, ccg):
             'nchannels': nchannels,
             'nspikes': nspikes,
             'ccg': _genccg(),
-           }
+            }
 
 
 class ClusterView(DOMWidget):
