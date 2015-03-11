@@ -27,12 +27,12 @@ define(function (require) {
     var IPython = require('base/js/namespace');
     var $ = require('jquery');
     //var events = require("base/js/events");
-    var dockspawn = require('/nbextensions/phyui/dock-spawn/dist/js/dockspawn.js');
+    var dockspawn = require('/nbextensions/phyui/lib/dock-spawn/dist/js/dockspawn.js');
     //var codecell = require('notebook/js/codecell');
     var dockId = 0;
 
-    var hm = require('/nbextensions/phyui/ipython/notebooksession.js');
-    var kind = require('/nbextensions/phyui/ipython/kernel_indicator.js');
+    var hm = require('/nbextensions/phyui/notebook/js/notebooksession.js');
+    var kind = require('/nbextensions/phyui/notebook/js/kernel_indicator.js');
 
     var storeKey = 'manual_clustering_dockspawn_layout_state';
 
@@ -123,9 +123,10 @@ define(function (require) {
         $('#placeholder4').children().remove();
 
         console.log('session done');
-        myhack.create_result_cell('#placeholder1', "from phyui.session import start_manual_clustering; \
-                                                    session = start_manual_clustering('" + filename + "'); \
-                                                    session.show_clusters();");
+        myhack.create_result_cell('#placeholder1',
+                                  "from phyui.session import start_manual_clustering; \
+                                   session = start_manual_clustering('" + filename + "'); \
+                                   session.show_clusters();");
         var cc = myhack.create_result_cell('#placeholder2', "w = session.show_waveforms(); w.show()");
 
         //bind the dockspawn resizeHandler event to vispy

@@ -6,10 +6,12 @@
 # Imports
 #------------------------------------------------------------------------------
 
+from vispy.app import use_app
+
 from phy.plot.waveforms import WaveformView, add_waveform_view
 from phy.cluster.manual.session import Session
-from phyui.cluster_view import ClusterView, cluster_info
-import vispy.app
+
+from .cluster_view import ClusterView, cluster_info
 
 
 class UISession(Session):
@@ -36,16 +38,22 @@ class UISession(Session):
     def show_clusters(self):
         """Create and show a new cluster view."""
 
+        # TODO: use the model instead
         cluster_colors = [(1., 0., 0.)
                           for cluster in self.clustering.cluster_ids]
-        clusters = [ cluster_info(c, quality=0, nchannels=1, nspikes=2, ccg=None) for c in self.clustering.cluster_ids ]
+        clusters = [cluster_info(c, quality=0, nchannels=1,
+                                 nspikes=2, ccg=None)
+                    for c in self.clustering.cluster_ids]
         view = ClusterView(clusters=clusters, colors=cluster_colors)
 
-        def onSelect(_, __, clusters):
+        def on_select(_, __, clusters):
             self.select([int(x) for x in clusters])
-        view.on_trait_change(onSelect, 'value')
+
+        view.on_trait_change(on_select, 'value')
+
         from IPython.display import display
         display(view)
+
         return view
 
 
@@ -71,7 +79,7 @@ def start_manual_clustering(filename=None, model=None, session=None,
     if session is None:
         session = UISession(store_path=store_path)
 
-    vispy.app.use_app('ipynb_webgl')
+    use_app('ipynb_webgl')
 
     session.open(filename=filename, model=model)
     return session

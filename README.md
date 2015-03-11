@@ -13,4 +13,4 @@ or if you want to develop and only create symlinks to your source directory:
 
 Install the IPython nbextension using:
 
-    ipython install-nbextension --symlink static/phyui --user
+    ipython install-nbextension --symlink --user phyui/static --destination=phyui

@@ -21,16 +21,15 @@ test_requirements = [
 setup(
     name='phyui',
     version='0.1.0-alpha',
-    description='Electrophysiological data analysis.',
+    description='Manual sorting GUI for phy.',
     long_description=readme,
-    author='Kwik Team',
+    author='kwikteam',
     author_email='cyrille.rossant at gmail.com',
     url='https://github.com/kwikteam/phy',
     packages=[
         'phyui',
     ],
-    package_dir={'phyui':
-                 'phyui'},
+    package_dir={'phyui': 'phyui'},
     include_package_data=True,
     install_requires=requirements,
     license="BSD",

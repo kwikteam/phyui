@@ -6,15 +6,18 @@
 # Imports
 #------------------------------------------------------------------------------
 
+import random
+
 import numpy as np
 from IPython.utils.traitlets import Unicode, List
 from IPython.html.widgets import DOMWidget
-import random
+
 
 #------------------------------------------------------------------------------
 # Cluster view
 #------------------------------------------------------------------------------
 
+# TODO: use the model instead
 def _genccg():
     nbins = 41
     bins = [None] * (nbins + 1)
@@ -37,12 +40,12 @@ def cluster_info(clusterid, quality, nchannels, nspikes, ccg):
             'nchannels': nchannels,
             'nspikes': nspikes,
             'ccg': _genccg(),
-           }
+            }
 
 
 class ClusterView(DOMWidget):
     _view_name = Unicode('ClusterWidget', sync=True)
-    _view_module = Unicode('/nbextensions/phyui/clusterview/widgets.js',
+    _view_module = Unicode('/nbextensions/phyui/cluster/js/widgets.js',
                            sync=True)
     description = Unicode(help="Description", sync=True)
     clusters = List(sync=True)
