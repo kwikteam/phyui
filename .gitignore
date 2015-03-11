@@ -3,6 +3,7 @@ wiki
 .idea
 .ipynb_checkpoints
 examples
+launch.sh
 
 *.py[cod]
 .coverage*
