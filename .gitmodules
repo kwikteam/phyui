@@ -1,3 +1,3 @@
-[submodule "phyui/static/js/dock-spawn"]
-	path = phyui/static/js/dock-spawn
+[submodule "phyui/static/lib/dock-spawn"]
+	path = phyui/static/lib/dock-spawn
 	url = https://github.com/kwikteam/dock-spawn.git
