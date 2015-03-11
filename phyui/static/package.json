@@ -1,19 +1,19 @@
 {
-  "name": "phy",
-  "version": "1.0.0",
-  "description": "Clustering",
+  "name": "phyui",
+  "version": "0.1.0",
+  "description": "Manual clustering interface",
   "author": "kwikteam@cortexlab.com",
-  "homepage": "https://github.com/kwikteam/phy",
+  "homepage": "https://github.com/kwikteam/phyui",
   "main": "./src/index",
   "scripts": {
     "build": "gulp build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kwikteam/phy.git"
+    "url": "https://github.com/kwikteam/phyui.git"
   },
   "bugs": {
-    "url": "https://github.com/kwikteam/phy/issues"
+    "url": "https://github.com/kwikteam/phyui/issues"
   },
   "dependencies": {
   },

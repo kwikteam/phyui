@@ -1,9 +1,9 @@
 
 define(function(require) {
 
-    d3 = require('/nbextensions/phyui/clusterview/d3.js');
-    utils = require('/nbextensions/phyui/ipython/utils.js');
-    utils.load_css('/nbextensions/phyui/clusterview/d3clusterwidget.css');
+    d3 = require('/nbextensions/phyui/js/lib/d3.js');
+    utils = require('/nbextensions/phyui/notebook/js/utils.js');
+    utils.load_css('/nbextensions/phyui/cluster/css/cluster_widget.css');
 
     function D3ClusterWidget(clusterView, displayAttr) {
         this.view = clusterView;
