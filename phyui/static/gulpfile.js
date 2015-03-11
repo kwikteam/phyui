@@ -7,9 +7,8 @@ var gulp = require('gulp'),
  *****/
 gulp.task('jshint', function () {
     return gulp.src([
-        'notebook/js/notebook_session.js',
-        'js/manual_clustering.js',
-        'gulpfile.js'
+        '*.js',
+        '*/*.js',
         ])
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-summary'));
