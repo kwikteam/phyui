@@ -27,7 +27,7 @@ define(function (require) {
     var IPython = require('base/js/namespace');
     var $ = require('jquery');
     //var events = require("base/js/events");
-    var dockspawn = require('/nbextensions/phyui/js/lib/dock-spawn/dist/js/dockspawn.js');
+    var dockspawn = require('/nbextensions/phyui/lib/dock-spawn/dist/js/dockspawn.js');
     //var codecell = require('notebook/js/codecell');
     var dockId = 0;
 

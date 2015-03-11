@@ -1,7 +1,7 @@
 
 define(function(require) {
 
-    d3 = require('/nbextensions/phyui/js/lib/d3.js');
+    d3 = require('/nbextensions/phyui/lib/d3.js');
     utils = require('/nbextensions/phyui/notebook/js/utils.js');
     utils.load_css('/nbextensions/phyui/cluster/css/cluster_widget.css');
 
