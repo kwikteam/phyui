@@ -16,6 +16,7 @@
     "url": "https://github.com/kwikteam/phyui/issues"
   },
   "dependencies": {
+    "gulp-jslint": "^0.2.2"
   },
   "devDependencies": {
     "gulp": "^3.8.8",
