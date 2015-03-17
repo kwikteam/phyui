@@ -1,7 +1,7 @@
 define(function (require) {
     "use strict";
 
-        function GetURLParameter(sParam)
+    function GetURLParameter(sParam)
     {
         var sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
