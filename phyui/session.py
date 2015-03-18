@@ -12,7 +12,7 @@ from phy.cluster.manual.session import Session
 
 from IPython.display import JSON
 from .cluster_view import ClusterView, cluster_info
-
+from .session_model import SessionModel
 
 class UISession(Session):
     """Default manual clustering session in the IPython notebook.
@@ -27,8 +27,9 @@ class UISession(Session):
 
     data_store_path = '/home/ctaf/src/cortex/data/'
 
-    def __init__(self, store_path=None):
-        super(UISession, self).__init__(store_path=store_path)
+    def __init__(self, *args, **kwargs):
+        super(UISession, self).__init__(*args, **kwargs)
+        self.uimodel = SessionModel()
         self.action(self.show_waveforms, "Show waveforms")
         self.filename = None
 
