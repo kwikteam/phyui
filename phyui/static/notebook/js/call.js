@@ -14,7 +14,7 @@ define(function(require) {
             if (error_cb)
                 error_cb(msg);
             else
-                console.log("ipython.call error:", msg.content.ename, msg.content.evalue);
+                console.log("ipython.call error:", msg.content.ename, ":", msg.content.evalue);
         }
         else if (msg.msg_type == "execute_result") {
             if (success_cb)

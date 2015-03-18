@@ -34,7 +34,7 @@ define(function(require) {
                 prom_session.reject("no model found for the session");
             }
           }, function(msg) {
-              prom_session.reject("error: " + msg.content.ename + ": " + msg.content.evalue);
+              prom_session.reject("error: " + msg.content.ename + ": " + msg.content.evalue, "\n", msg.content.traceback);
           });
     };
 

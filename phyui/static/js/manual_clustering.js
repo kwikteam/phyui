@@ -123,11 +123,8 @@ define(function (require) {
         $('#placeholder4').children().remove();
 
         console.log('session done');
-        myhack.create_result_cell('#placeholder1',
-                                  "from phyui.session import start_manual_clustering; \
-                                   session = start_manual_clustering('" + filename + "'); \
-                                   session.show_clusters();");
-        var cc = myhack.create_result_cell('#placeholder2', "w = session.show_waveforms(); w.show()");
+        myhack.create_result_cell('#placeholder1', "phyui.session.session().show_clusters();");
+        var cc = myhack.create_result_cell('#placeholder2', "phyui.session.session().show_waveforms();");
 
         //bind the dockspawn resizeHandler event to vispy
         $('#placeholder2')[0].resizeHandler = function(x, y) {
