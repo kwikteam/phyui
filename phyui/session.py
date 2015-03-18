@@ -6,8 +6,7 @@
 # Imports
 #------------------------------------------------------------------------------
 
-from vispy.app import use_app
-
+import os.path
 from phy.plot.waveforms import WaveformView, add_waveform_view
 from phy.cluster.manual.session import Session
 
@@ -25,12 +24,23 @@ class UISession(Session):
     model : instance of BaseModel
         A Model instance, to be used if 'filename' is not used.
     """
+
+    data_store_path = '/home/ctaf/src/cortex/data/'
+
     def __init__(self, store_path=None):
         super(UISession, self).__init__(store_path=store_path)
         self.action(self.show_waveforms, "Show waveforms")
+        self.filename = None
+
+    #override Session.open
+    def open(self, filename):
+        super(UISession, self).open(os.path.join(self.data_store_path, filename));
+        self.filename = filename
 
     def list_kwik_files(self):
-        return JSON( [ 'filename1', 'filename2' ]);
+        """ [ current, [ candidates ] ]
+        """
+        return JSON( [ self.filename, [ 'filename1', 'filename2', 'test_hybrid_120sec.kwik' ] ] );
 
     def show_waveforms(self):
         view = add_waveform_view(self, backend='ipynb_webgl')
@@ -67,28 +77,27 @@ def session():
         _session = UISession();
     return _session
 
-#------------------------------------------------------------------------------
-# Helper functions
-#------------------------------------------------------------------------------
+# #------------------------------------------------------------------------------
+# # Helper functions
+# #------------------------------------------------------------------------------
 
-def start_manual_clustering(filename=None):
-    """Start a manual clustering session in the IPython notebook.
+# def start_manual_clustering(filename=None):
+#     """Start a manual clustering session in the IPython notebook.
 
-    Parameters
-    ----------
-    session : BaseSession
-        A BaseSession instance
-    filename : str
-        Path to a .kwik file, to be used if 'model' is not used.
-    model : instance of BaseModel
-        A Model instance, to be used if 'filename' is not used.
+#     Parameters
+#     ----------
+#     session : BaseSession
+#         A BaseSession instance
+#     filename : str
+#         Path to a .kwik file, to be used if 'model' is not used.
+#     model : instance of BaseModel
+#         A Model instance, to be used if 'filename' is not used.
 
-    """
+#     """
 
-    if session is None:
-        session = UISession()
+#     if session is None:
+#         session = UISession()
 
-    use_app('ipynb_webgl')
 
-    session.open(filename=filename)
-    return session
+#     session.open(filename=filename)
+#     return session
