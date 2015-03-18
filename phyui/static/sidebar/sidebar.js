@@ -5,10 +5,9 @@ define(function(require) {
 
     var IPython = require('base/js/namespace');
     var $ = require('jquery');
-    var icall = require('nbextensions/phyui/notebook/js/call');
+    var kwiksession = require('nbextensions/phyui/notebook/js/session');
 
-
-            //Initialise the popover
+    //Initialise the popover
     var _wait_popover_htmlcontent =
         '<div><div id="filelist-chooser">' +
             '<i class="fa fa-4x fa-spinner fa-pulse"></i>' +
@@ -21,20 +20,23 @@ define(function(require) {
         sidebar.css('top', (window.innerHeight - sidebar.height()) / 2 + 'px');
     };
 
-    var _on_filelist_error = function(msg) {
+    var _on_filelist_error = function(err) {
         var $formflist = $(
             '<div><div id="filelist-chooser">' +
-                msg.content.ename + ':' + msg.content.evalue +
+                err +
             '</div></div>');
         var popover = $('#choosefilebtn').data('bs.popover');
         popover.options.content = $formflist.html();
         popover.show();
     }
 
-    var _on_filelist = function(msg) {
-        var data = msg.content.data['application/json'];
-        var current = data[0];
-        var flist = data[1];
+    var _on_filelist = function(session) {
+
+        //var data = msg.content.data['application/json'];
+        //var current = data[0];
+        //var flist = data[1];
+        var current = session.get('current');
+        var flist = session.get('files');
         console.log('current:', current, 'filelists:', flist);
 
         var popover = $('#choosefilebtn').data('bs.popover');
@@ -61,7 +63,11 @@ define(function(require) {
         }
         $sel.change(function() {
             var val = $sel.find('option:selected').text();
-            icall.ipython_call('phyui.session.session().open("' + val + '")');
+            kwiksession.session.done(function(session) {
+                session.set('current', val);
+                //sync to the backend
+                session.save();
+            });
             popover.hide();
         });
 
@@ -83,7 +89,7 @@ define(function(require) {
             console.log("popover show");
             popover.options.content = _wait_popover_htmlcontent;
             popover.show();
-            icall.ipython_call('import phyui.session; phyui.session.session().list_kwik_files()', _on_filelist, _on_filelist_error);
+            kwiksession.session.then(_on_filelist, _on_filelist_error);
         });
         //initialise the popover
         choosefile.popover({
@@ -102,6 +108,10 @@ define(function(require) {
         });
         var manualcluster = $('<i id="autoclusterbtn" class="fa fa-2x fa-child"></i>').on("click", function(e) {
             console.log("manual clustering");
+            var notebook_name = IPython.notebook.notebook_name;
+            var notebook_path = IPython.notebook.notebook_path;
+            var filename = '/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik';
+            window.open('/nbextensions/phyui/manual_clustering.html?notebook_name=' + notebook_name + '&notebook_path=' + notebook_path + '&filename=' + filename);
         });
 
 
