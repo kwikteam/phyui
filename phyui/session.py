@@ -78,28 +78,3 @@ def session():
     if _session is None:
         _session = UISession();
     return _session
-
-# #------------------------------------------------------------------------------
-# # Helper functions
-# #------------------------------------------------------------------------------
-
-# def start_manual_clustering(filename=None):
-#     """Start a manual clustering session in the IPython notebook.
-
-#     Parameters
-#     ----------
-#     session : BaseSession
-#         A BaseSession instance
-#     filename : str
-#         Path to a .kwik file, to be used if 'model' is not used.
-#     model : instance of BaseModel
-#         A Model instance, to be used if 'filename' is not used.
-
-#     """
-
-#     if session is None:
-#         session = UISession()
-
-
-#     session.open(filename=filename)
-#     return session
