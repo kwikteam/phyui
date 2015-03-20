@@ -4,10 +4,12 @@ define(function(require) {
     "use strict";
 
     var IPython = require('base/js/namespace');
+    var events = require('base/js/events');
     var $ = require('jquery');
     var icall = require('nbextensions/phyui/notebook/js/call');
 
-    var prom_session = $.Deferred();
+    var prom_session = undefined;
+    var on_session = $.Callbacks("memory");
 
     //where everything starts...
     // - the phyui.session.session() call initialise the backbone uimodel.
@@ -19,8 +21,15 @@ define(function(require) {
     //    .fail(function(err) { console.log(err) });
     //
     var _init_session = function() {
+        if (prom_session)
+          prom_session.reject("session has been reinitialised");
+        //reinit for each new session
+        prom_session = $.Deferred();
 
-        icall.ipython_call('import IPython.display; import phyui.session; IPython.display.JSON([phyui.session.session().uimodel._model_id])', function(msg) {
+        // we close/reopen the model so it is reloaded in the frontend. otherwise
+        // it's only loaded when the first notebook is loaded and reloading a notebook
+        // do not works
+        icall.ipython_call('import IPython.display; import phyui.session; phyui.session.session().uimodel.close(); phyui.session.session().uimodel.open(); IPython.display.JSON([phyui.session.session().uimodel._model_id])', function(msg) {
             var mid = msg.content.data['application/json'][0];
             console.log("SessionModel id:", mid);
             var prom = IPython.notebook.session.kernel.widget_manager.get_model(mid);
@@ -28,6 +37,7 @@ define(function(require) {
                 prom.then(function(data) {
                     console.log("SessionModel found!!!!");
                     prom_session.resolve(data);
+                    on_session.fire(data);
                 });
             } else {
                 console.log("cannot find the promise for the session controller.");
@@ -38,7 +48,21 @@ define(function(require) {
           });
     };
 
+    //reinit the session on kernel reconnection
+    events.on('kernel_connected.Kernel', function(){
+      console.log("REINIT");
+      _init_session();
+    });
+
     _init_session();
 
-    return { 'session' : prom_session };
+    //use a function to keep prom_session dynamic.
+    //its reinit by _init_session when the kernel reload
+    var _get_session = function() {
+      return prom_session.promise();
+    }
+
+    return { 'session' : _get_session, //fired only once, use when session is needed
+             'on_session' : on_session,          //fired for each session, use for setup
+           };
 });
