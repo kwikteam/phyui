@@ -1,4 +1,22 @@
+// Where everything starts...
+// Load a UISession and establish the connection between the frontend
+// and the backend
 
+// - the phyui.session.session() call initialise the backbone uimodel.
+// - session and on_session both return the backbone UIModel corresponding
+//   to the python class phyui.session.session().uimodel
+//
+// to use it:
+// require('session').session()
+//    .done(function(ses) { ses.get('current') })
+//    .fail(function(err) { console.log(err) });
+//
+
+// Another method is provided to help initialising code that depends on
+// on the session.
+// require('session').on_session(function(ses) {
+//   ses.on('change:myvalue', myvaluecallback)
+//})
 
 define(function(require) {
     "use strict";
@@ -11,15 +29,6 @@ define(function(require) {
     var prom_session = undefined;
     var on_session = $.Callbacks("memory");
 
-    //where everything starts...
-    // - the phyui.session.session() call initialise the backbone uimodel.
-    // - the uimodel is returned through prom_session
-    //
-    // to use it:
-    // require('session').session
-    //    .done(function(ses) { ses.get('current') })
-    //    .fail(function(err) { console.log(err) });
-    //
     var _init_session = function() {
         if (prom_session)
           prom_session.reject("session has been reinitialised");
@@ -50,7 +59,6 @@ define(function(require) {
 
     //reinit the session on kernel reconnection
     events.on('kernel_connected.Kernel', function(){
-      console.log("REINIT");
       _init_session();
     });
 
@@ -62,7 +70,7 @@ define(function(require) {
       return prom_session.promise();
     }
 
-    return { 'session' : _get_session, //fired only once, use when session is needed
-             'on_session' : on_session,          //fired for each session, use for setup
+    return { 'session' : _get_session,  //fired only once, use when session is needed
+             'on_session' : on_session, //fired for each session, use for setup
            };
 });
