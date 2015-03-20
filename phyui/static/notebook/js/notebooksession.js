@@ -36,6 +36,7 @@ define(function(require) {
             return codecell.CodeCell.msg_cells[msg_id] || null;
         };
 
+
         //needed to display widget
         FakeNotebook.prototype.find_cell_index = function () {
             return 42;

@@ -16,7 +16,6 @@ define(function(require) {
 
     var resize_sidebar = function() {
         var sidebar = $('#cluster-sidebar');
-        console.log("top:", (window.innerHeight - sidebar.height()) / 2);
         sidebar.css('top', (window.innerHeight - sidebar.height()) / 2 + 'px');
     };
 
@@ -63,7 +62,7 @@ define(function(require) {
         }
         $sel.change(function() {
             var val = $sel.find('option:selected').text();
-            kwiksession.session.done(function(session) {
+            kwiksession.session().done(function(session) {
                 session.set('current', val);
                 //sync to the backend
                 session.save();
@@ -89,8 +88,31 @@ define(function(require) {
             console.log("popover show");
             popover.options.content = _wait_popover_htmlcontent;
             popover.show();
-            kwiksession.session.then(_on_filelist, _on_filelist_error);
+            kwiksession.session().then(_on_filelist, _on_filelist_error);
         });
+
+        var statusico = $('<i class=""></i>');
+
+        var set_status = function(status) {
+          if (status == "open") {
+            statusico.attr("class", "fa fa-check");
+          } else if (status == "opening") {
+            statusico.attr("class", "fa fa-spinner fa-spin");
+          } else if (status == "close") {
+            statusico.attr("class", "fa fa-close");
+          } else if (status == "error") {
+            statusico.attr("class", "fa fa-exclamation");
+          }
+        }
+
+        kwiksession.on_session.add(function(ses) {
+          ses.on('change:status', function(model, value, opt) {set_status(value);});
+          set_status(ses.get("status"));
+        }, function(err) {
+          set_status("error");
+        });
+
+
         //initialise the popover
         choosefile.popover({
             content: _wait_popover_htmlcontent,
@@ -117,7 +139,7 @@ define(function(require) {
 
 
         var sidebar = $('<div id="cluster-sidebar" style="float:left; position: fixed; z-index:1000">')
-            .append(choosefile).append('<br>')
+            .append(choosefile).append(statusico).append('<br>')
             .append(traceview).append('<br>')
             .append(autocluster).append('<br>')
             .append(manualcluster).append('<br>')
