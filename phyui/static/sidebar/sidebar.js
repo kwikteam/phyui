@@ -105,7 +105,7 @@ define(function(require) {
           }
         }
 
-        kwiksession.on_session.add(function(ses) {
+        kwiksession.on_session().add(function(ses) {
           ses.on('change:status', function(model, value, opt) {set_status(value);});
           set_status(ses.get("status"));
         }, function(err) {

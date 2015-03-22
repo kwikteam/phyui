@@ -2,9 +2,9 @@
 // Load a UISession and establish the connection between the frontend
 // and the backend
 
-// - the phyui.session.session() call initialise the backbone uimodel.
+// - the phyui.session() call initialise the backbone uimodel.
 // - session and on_session both return the backbone UIModel corresponding
-//   to the python class phyui.session.session().uimodel
+//   to the python class phyui.session().uimodel
 //
 // to use it:
 // require('session').session()
@@ -38,7 +38,7 @@ define(function(require) {
         // we close/reopen the model so it is reloaded in the frontend. otherwise
         // it's only loaded when the first notebook is loaded and reloading a notebook
         // do not works
-        icall.ipython_call('import IPython.display; import phyui.session; phyui.session.session().uimodel.close(); phyui.session.session().uimodel.open(); IPython.display.JSON([phyui.session.session().uimodel._model_id])', function(msg) {
+        icall.ipython_call('import IPython.display; import phyui; phyui.session().uimodel.close(); phyui.session().uimodel.open(); IPython.display.JSON([phyui.session().uimodel._model_id])', function(msg) {
             var mid = msg.content.data['application/json'][0];
             console.log("SessionModel id:", mid);
             var prom = IPython.notebook.session.kernel.widget_manager.get_model(mid);
@@ -70,7 +70,12 @@ define(function(require) {
       return prom_session.promise();
     }
 
+    //wrapper function not needed but used for coherency with _get_session
+    var _get_on_session = function() {
+      return on_session;
+    }
+
     return { 'session' : _get_session,  //fired only once, use when session is needed
-             'on_session' : on_session, //fired for each session, use for setup
+             'on_session' : _get_on_session, //fired for each session, use for setup
            };
 });

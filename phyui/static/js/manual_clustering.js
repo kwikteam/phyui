@@ -117,14 +117,15 @@ define(function (require) {
 
 
     events.on('kernel_connected.Kernel', function(){
+
         $('#placeholder1').children().remove();
         $('#placeholder2').children().remove();
         $('#placeholder3').children().remove();
         $('#placeholder4').children().remove();
 
         console.log('session done');
-        myhack.create_result_cell('#placeholder1', "phyui.session.session().show_clusters();");
-        var cc = myhack.create_result_cell('#placeholder2', "phyui.session.session().show_waveforms();");
+        myhack.create_result_cell('#placeholder1', "import phyui; phyui.session().show_clusters();");
+        var cc = myhack.create_result_cell('#placeholder2', "import phyui; phyui.session().show_waveforms();");
 
         //bind the dockspawn resizeHandler event to vispy
         $('#placeholder2')[0].resizeHandler = function(x, y) {
