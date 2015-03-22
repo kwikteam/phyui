@@ -8,6 +8,9 @@ __author__ = 'kwikteam'
 __email__ = 'rossant at github'
 __version__ = '0.1.0-alpha'
 
+__all__ = ( 'session', 'UISession' )
+
+from ._session import session, UISession
 
 def prepare_js():
     """ This is needed to map js/css to the nbextensions folder
