@@ -66,12 +66,13 @@ class UISession(Session):
         """Create and show a new cluster view."""
 
         # TODO: use the model instead
-        cluster_colors = [(1., 0., 0.)
-                          for cluster in self.clustering.cluster_ids]
-        clusters = [cluster_info(c, quality=0, nchannels=1,
-                                 nspikes=2, ccg=None)
-                    for c in self.clustering.cluster_ids]
-        view = ClusterView(clusters=clusters, colors=cluster_colors)
+        if hasattr(self, "clustering"):
+            clusters = [cluster_info(c, quality=0, nchannels=1,
+                                    nspikes=2, ccg=None)
+                                    for c in self.clustering.cluster_ids]
+        else:
+            clusters = []
+        view = ClusterView(clusters=clusters)
 
         def on_select(_, __, clusters):
             self.select([int(x) for x in clusters])
