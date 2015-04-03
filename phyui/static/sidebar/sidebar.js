@@ -132,8 +132,7 @@ define(function(require) {
             console.log("manual clustering");
             var notebook_name = IPython.notebook.notebook_name;
             var notebook_path = IPython.notebook.notebook_path;
-            var filename = '/home/ctaf/src/cortex/data/test_hybrid_120sec.kwik';
-            window.open('/nbextensions/phyui/manual_clustering.html?notebook_name=' + notebook_name + '&notebook_path=' + notebook_path + '&filename=' + filename);
+            window.open('/nbextensions/phyui/manual_clustering.html?notebook_name=' + notebook_name + '&notebook_path=' + notebook_path);
         });
 
 

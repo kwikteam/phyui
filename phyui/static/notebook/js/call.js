@@ -29,7 +29,8 @@ define(function(require) {
     //useful fields:
     //   success : msg.content.data
     //   error   : msg.content.{ename,evalue}
-    var ipython_call = function(code, success_cb, error_cb) {
+    // kernel is optional
+    var ipython_call = function(code, success_cb, error_cb, kernel) {
         var cbs = {
             shell : {
                 reply : dolog.bind(undefined, 'reply'),
@@ -44,8 +45,9 @@ define(function(require) {
             },
             //input : dolog.bind(undefined, 'input'),
         };
-
-        IPython.notebook.session.kernel.execute(code, cbs, { silent: false } );
+        if (!kernel)
+          kernel = IPython.notebook.session.kernel;
+        kernel.execute(code, cbs, { silent: false } );
     };
 
     return { 'ipython_call' : ipython_call };

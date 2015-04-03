@@ -10,7 +10,6 @@
 
     <link rel="stylesheet" href="/static/components/jquery-ui/themes/smoothness/jquery-ui.min.css" type="text/css">
 
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full&amp;delayStartupUntil=configured" charset="utf-8"></script>
     <link rel="stylesheet" href="/static/components/bootstrap-tour/build/css/bootstrap-tour.min.css" type="text/css">
     <link rel="stylesheet" href="/static/components/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="/static/style/style.min.css" type="text/css">
@@ -83,7 +82,14 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Menu<span class="caret"></span></a>
+              <ul id="kwikfile_list" class="dropdown-menu" role="menu">
+                <!-- <li><a href="#">Action</a></li> -->
+                <!-- <li><a href="#">Another action</a></li> -->
+                <!-- <li><a href="#">Something else here</a></li> -->
+              </ul>
+            </li>
             <li><a id="restart_kernel" href="#">Restart Kernel</a></li>
             <!-- <li><a href="#about">About</a></li> -->
             <!-- <li><a href="#contact">Contact</a></li> -->

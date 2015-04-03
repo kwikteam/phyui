@@ -28,6 +28,12 @@ class UISession(Session):
 
     data_store_path = '/home/ctaf/src/cortex/data/'
 
+    def iwant(self):
+        self.uimodel.send_state()
+        #data={'model_name': self.uimodel._model_name,
+    #          'model_module': self.uimodel._model_module}
+    #    self.uimodel.comm.open(data)
+
     def __init__(self, *args, **kwargs):
         super(UISession, self).__init__(*args, **kwargs)
         self.uimodel = SessionModel()

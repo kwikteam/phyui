@@ -43,6 +43,10 @@ define(function(require) {
         };
     };
 
+    IPython.notebook = new FakeNotebook();
+    console.log("FAKEITBABY");
+
+
     var HackMe = function(nbname, nbpath, kernel) {
         this.notebook_name = nbname;
         this.notebook_path = nbpath;
@@ -70,8 +74,7 @@ define(function(require) {
 
         HackMe.prototype.start = function () {
             var that = this;
-            this.notebook = new FakeNotebook();
-
+            this.notebook = IPython.notebook;
             var options = {
                 base_url: this.base_url,
                 ws_url: this.ws_url,
@@ -84,6 +87,7 @@ define(function(require) {
 
             var prom = $.Deferred();
             this.session = new session.Session(options);
+            this.notebook.session = this.session;
             this.session.start(function() {
                 that.widget_manager = that.session.kernel.widget_manager;
                 prom.resolve();
@@ -137,6 +141,24 @@ define(function(require) {
             cc.execute();
             return cc;
         };
+
+        HackMe.prototype.create_result = function(placeholder, codetorun) {
+          var options = {
+            events: this.events,
+            keyboard_manager: this.keyboard_manager,
+            selector: placeholder,
+            prompt_area: true,
+          };
+          var oa = new outputarea.OutputArea(options);
+
+          if (!this.kernel || !this.kernel.is_connected()) {
+              console.log("Can't execute, kernel is not connected.");
+              return;
+          }
+        };
+
+
+
 
     }; //end class
     console.log("loading ... done");

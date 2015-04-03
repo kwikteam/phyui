@@ -18,9 +18,8 @@ define(function (require) {
     var notebook_name = GetURLParameter('notebook_name');
     var notebook_path = GetURLParameter('notebook_path');
     var kernel = GetURLParameter('kernel') || 'python2';
-    var filename = GetURLParameter('filename');
 
-    console.log('Connecting to name:', notebook_name, ' path:', notebook_path, ' kernel:', kernel, ' filename:', filename);
+    console.log('Connecting to name:', notebook_name, ' path:', notebook_path, ' kernel:', kernel);
 
 
 
@@ -112,11 +111,46 @@ define(function (require) {
         myhack.session.kernel.restart();
     });
 
+    //init the clustering session.
+    var kwiksession = require('/nbextensions/phyui/notebook/js/session.js');
+    kwiksession.set_kernel(myhack.session.kernel);
 
     var events = require('base/js/events');
 
+    var update_filelist = function() {
+      kwiksession.session().then(_on_filelist, function(err) { console.log("error:", err);});
+    };
+
+    var _on_filelist = function(session) {
+      var current = session.get('current');
+      var flist = session.get('files');
+      console.log('current:', current, 'filelists:', flist);
+
+      var kwikfiles = $('#kwikfile_list');
+      kwikfiles.children().remove();
+      flist.forEach(function(p) {
+        var l;
+        if (p == current)
+          l = $('<li class="active"><a href="#">' + p + '</a></li>');
+        else
+          l = $('<li><a href="#">' + p + '</a></li>');
+        l.prependTo(kwikfiles);
+        l.on('click', function(e) {
+          kwiksession.session().then(function(sess) { sess.set('current', p); sess.store(); });
+        });
+      });
+    };
+
 
     events.on('kernel_connected.Kernel', function(){
+        kwiksession.set_kernel(myhack.session.kernel);
+
+        kwiksession.session().then(function(sess) {
+          sess.on('change:files', update_filelist);
+          sess.on('change:current', update_filelist);
+        });
+
+        update_filelist();
 
         $('#placeholder1').children().remove();
         $('#placeholder2').children().remove();
