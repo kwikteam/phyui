@@ -19,7 +19,7 @@ def prepare_js():
     nbextensions.install_nbextension(pkgdir, symlink=True, user=True,
                                      destination='phyui')
 
-from vispy.app import use_app
-use_app('ipynb_webgl')
+#from vispy.app import use_app
+#use_app('ipynb_webgl')
 
 prepare_js()
