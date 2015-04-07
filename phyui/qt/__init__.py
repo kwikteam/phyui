@@ -64,6 +64,11 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
 
 
 
+        from PyQt4 import QtWebKit
+        wv = QtWebKit.QWebView()
+        wv.setUrl(QtCore.QUrl("http://localhost:8888"))
+        self.create_view(wv, "Clusters", position=QtCore.Qt.LeftDockWidgetArea)
+
         self.restore_geometry()
 
     def retranslateUi(self):
