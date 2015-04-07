@@ -23,6 +23,7 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
         super(ManualClusteringMainWindow, self).__init__(parent)
 
+        self.settings = QtCore.QSettings()
         self.setObjectName("MainWindow")
         self.resize(128, 64)
         self.centralwidget = QtGui.QWidget(self)
@@ -59,12 +60,11 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
 
         canv = add_waveform_view(phyui.session())
         c = canv.native #QtCanvas(canvas=canv)
-        self.create_view(c, "myvispycanvas", position=QtCore.Qt.RightDockWidgetArea)
-
-        #print "la:", la
-        la.setText("hellllo")
+        self.create_view(c, "Waveform", position=QtCore.Qt.RightDockWidgetArea)
 
 
+
+        self.restore_geometry()
 
     def retranslateUi(self):
         self.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Manual Clustering", None, QtGui.QApplication.UnicodeUTF8))
@@ -114,13 +114,28 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
         # Return the dock widget.
         return dockwidget
 
+        # Geometry.
+
+    def save_geometry(self):
+        """Save the arrangement of the whole window."""
+        self.settings.setValue('state', self.saveState())
+        self.settings.setValue('size', self.size())
+        self.settings.setValue('pos', self.pos())
+
+    def restore_geometry(self):
+        """Restore the arrangement of the whole window."""
+        self.restoreState(self.settings.value("state", QtCore.QByteArray()).toByteArray())
+        self.resize(self.settings.value("size", QtCore.QSize(640, 480)).toSize())
+        self.move(self.settings.value("pos", QtCore.QPoint(200, 200)).toPoint())
 
 
 import sys
 
-
+# test main
 if __name__ == "__main__":
     qtapp = QtGui.QApplication(sys.argv)
     mySW = ManualClusteringMainWindow()
     mySW.show()
-    sys.exit(qtapp.exec_())
+    ret = qtapp.exec_()
+    mySW.save_geometry()
+    sys.exit(ret)
