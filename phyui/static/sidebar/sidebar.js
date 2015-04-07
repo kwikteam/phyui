@@ -105,11 +105,20 @@ define(function(require) {
           }
         }
 
+        var set_error = function(err) {
+          statusico.tooltip({ title: err});
+          choosefile.tooltip({ title: err});
+        }
+
         kwiksession.on_session().add(function(ses) {
           ses.on('change:status', function(model, value, opt) {set_status(value);});
+          ses.on('change:status_desc', function(model, value, opt) {set_error(value);});
           set_status(ses.get("status"));
+          set_error(ses.get("status_desc"));
+
         }, function(err) {
           set_status("error");
+          set_error(err);
         });
 
 

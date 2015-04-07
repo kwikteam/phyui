@@ -41,13 +41,16 @@ class UISession(Session):
         def _on_current(name, old, new):
             print "bim:", new
             self.open(new)
-
+        self.filename = None
         self.uimodel = SessionModel()
         self.uimodel.files = [ 'None', 'test_hybrid_120sec.kwik' ];
         self.uimodel.on_trait_change(_on_current, 'current');
 
     #override Session.open
     def open(self, filename):
+        if filename == self.filename:
+            return
+        self.filename = filename
         if filename == "None":
             #self.close()
             self.uimodel.set_status("close")
@@ -61,8 +64,9 @@ class UISession(Session):
             #import traceback
             #self.uimodel.set_status("error", traceback.format_exc())
             self.uimodel.set_status("error", str(err))
+            self.filename = "None" #avoid set_status('close')
+            self.uimodel.current = "None"
             raise
-            #self.uimodel.current = "None"
 
     def show_waveforms(self, backend='qt'):
         """ 'qt' | 'ipynb_webgl'
