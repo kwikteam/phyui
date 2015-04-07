@@ -61,6 +61,7 @@ class UISession(Session):
             #import traceback
             #self.uimodel.set_status("error", traceback.format_exc())
             self.uimodel.set_status("error", str(err))
+            raise
             #self.uimodel.current = "None"
 
     def show_waveforms(self, backend='qt'):
