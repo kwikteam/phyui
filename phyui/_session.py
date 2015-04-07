@@ -36,14 +36,14 @@ class UISession(Session):
 
     def __init__(self, *args, **kwargs):
         super(UISession, self).__init__(*args, **kwargs)
-        self.uimodel = SessionModel()
         self.action(self.show_waveforms, "Show waveforms")
-        self.uimodel.files = [ 'None', 'test_hybrid_120sec.kwik' ];
 
         def _on_current(name, old, new):
             print "bim:", new
             self.open(new)
 
+        self.uimodel = SessionModel()
+        self.uimodel.files = [ 'None', 'test_hybrid_120sec.kwik' ];
         self.uimodel.on_trait_change(_on_current, 'current');
 
     #override Session.open
@@ -63,14 +63,18 @@ class UISession(Session):
             self.uimodel.set_status("error", str(err))
             #self.uimodel.current = "None"
 
-    def show_waveforms(self):
-        view = add_waveform_view(self, backend='ipynb_webgl')
+    def show_waveforms(self, backend='qt'):
+        """ 'qt' | 'ipynb_webgl'
+        """
+        view = add_waveform_view(self, backend=backend)
         w = view.show()
         return view
 
-    def show_clusters(self):
+    def show_clusters(self, backend='ipynb_webgl'):
         """Create and show a new cluster view."""
 
+        if backend != 'ipynb_webgl':
+            raise RuntimeError("Only implemented for IPython notebook")
         # TODO: use the model instead
         if hasattr(self, "clustering"):
             clusters = [cluster_info(c, quality=0, nchannels=1,
@@ -86,7 +90,6 @@ class UISession(Session):
         view.on_trait_change(on_select, 'value')
 
         display(view)
-
         return view
 
 
