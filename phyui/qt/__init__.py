@@ -10,6 +10,7 @@ from phyui.qt.qtversion import QtCore, QtGui
 
 import phyui
 from phy.plot.waveforms import WaveformView, add_waveform_view
+from phy.plot.features import add_feature_view
 
 from vispy import app
 
@@ -59,9 +60,10 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
 
 
         canv = add_waveform_view(phyui.session())
-        c = canv.native #QtCanvas(canvas=canv)
-        self.create_view(c, "Waveform", position=QtCore.Qt.RightDockWidgetArea)
+        self.create_view(canv.native, "Waveform", position=QtCore.Qt.RightDockWidgetArea)
 
+        feat = add_feature_view(phyui.session())
+        self.create_view(feat.native, "Features", position=QtCore.Qt.RightDockWidgetArea)
 
 
         from PyQt4 import QtWebKit
