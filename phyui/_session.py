@@ -7,7 +7,6 @@
 #------------------------------------------------------------------------------
 
 import os.path
-from phy.plot.waveforms import WaveformView, add_waveform_view
 from phy.cluster.manual.session import Session
 
 from .cluster_view import ClusterView, cluster_info
@@ -67,13 +66,6 @@ class UISession(Session):
             self.filename = "None" #avoid set_status('close')
             self.uimodel.current = "None"
             raise
-
-    def show_waveforms(self, backend='qt'):
-        """ 'qt' | 'ipynb_webgl'
-        """
-        view = add_waveform_view(self, backend=backend)
-        w = view.show()
-        return view
 
     def show_clusters(self, backend='ipynb_webgl'):
         """Create and show a new cluster view."""

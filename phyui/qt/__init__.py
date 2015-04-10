@@ -9,8 +9,7 @@ from phyui.qt.dock import ViewDockWidget, DockTitleBar
 from phyui.qt.qtversion import QtCore, QtGui
 
 import phyui
-from phy.plot.waveforms import WaveformView, add_waveform_view
-from phy.plot.features import add_feature_view
+
 
 from vispy import app
 
@@ -27,19 +26,12 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
         self.settings = QtCore.QSettings()
         self.setObjectName("MainWindow")
         self.resize(128, 64)
-        self.centralwidget = QtGui.QWidget(self)
-        self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout = QtGui.QGridLayout(self.centralwidget)
-        self.gridLayout.setObjectName("gridLayout")
-        self.label = QtGui.QLabel(self.centralwidget)
-        self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.setCentralWidget(self.centralwidget)
 
         self.menubar = QtGui.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 82, 21))
         self.menubar.setObjectName("menubar")
         self.setMenuBar(self.menubar)
+
         self.statusbar = QtGui.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
         self.setStatusBar(self.statusbar)
@@ -48,34 +40,26 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
         # Dock widgets options
-        #self.setDockNestingEnabled(True)
+        self.setDockOptions(QtGui.QMainWindow.AllowTabbedDocks|QtGui.QMainWindow.AllowNestedDocks|QtGui.QMainWindow.AnimatedDocks)
 
-        la = QtGui.QLabel()
-        la.setText("fried eggs");
-        self.create_view(la, "Test 1", position=QtCore.Qt.LeftDockWidgetArea)
+        canv = phyui.session().show_waveforms(show=False).view
+        self.create_view(canv.native, "Waveforms", position=QtCore.Qt.RightDockWidgetArea)
 
-        la2 = QtGui.QLabel()
-        la2.setText("chicken wings");
-        self.create_view(la2, "Test 2", position=QtCore.Qt.LeftDockWidgetArea)
+        feat = phyui.session().show_features(show=False).view
+        self.create_view(feat.native, "Features", position=QtCore.Qt.LeftDockWidgetArea)
 
+        ccg = phyui.session().show_correlograms(show=False).view
+        self.create_view(ccg.native, "Correlograms", position=QtCore.Qt.LeftDockWidgetArea)
 
-        canv = add_waveform_view(phyui.session())
-        self.create_view(canv.native, "Waveform", position=QtCore.Qt.RightDockWidgetArea)
-
-        feat = add_feature_view(phyui.session())
-        self.create_view(feat.native, "Features", position=QtCore.Qt.RightDockWidgetArea)
-
-
-        from PyQt4 import QtWebKit
-        wv = QtWebKit.QWebView()
-        wv.setUrl(QtCore.QUrl("http://localhost:8888"))
-        self.create_view(wv, "Clusters", position=QtCore.Qt.LeftDockWidgetArea)
+        # from PyQt4 import QtWebKit
+        # wv = QtWebKit.QWebView()
+        # wv.setUrl(QtCore.QUrl("http://localhost:8888"))
+        # self.create_view(wv, "Clusters", position=QtCore.Qt.LeftDockWidgetArea)
 
         self.restore_geometry()
 
     def retranslateUi(self):
         self.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Manual Clustering", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "Hello World!", None, QtGui.QApplication.UnicodeUTF8))
 
 
     # View methods.
