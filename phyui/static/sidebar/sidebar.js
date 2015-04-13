@@ -7,13 +7,6 @@ define(function(require) {
     var $ = require('jquery');
     var kwiksession = require('nbextensions/phyui/notebook/js/session');
 
-    //Initialise the popover
-    var _wait_popover_htmlcontent =
-        '<div><div id="filelist-chooser">' +
-            '<i class="fa fa-4x fa-spinner fa-pulse"></i>' +
-        '</div></div>';
-
-
     var resize_sidebar = function() {
         var sidebar = $('#cluster-sidebar');
         sidebar.css('top', (window.innerHeight - sidebar.height()) / 2 + 'px');
@@ -30,28 +23,14 @@ define(function(require) {
     }
 
     var _on_filelist = function(session) {
-
-        //var data = msg.content.data['application/json'];
-        //var current = data[0];
-        //var flist = data[1];
         var current = session.get('current');
         var flist = session.get('files');
         console.log('current:', current, 'filelists:', flist);
 
-        var popover = $('#choosefilebtn').data('bs.popover');
+        $("#kwik-filelist-spinner").hide();
+        $("#kwik-filelist-chooser").show();
 
-        var $formflist = $(
-            '<div><div id="filelist-chooser">' +
-              '<form id="form-filelist">' +
-                '<select class="selectpicker show-tick">' +
-                  '<option>Mustard</option>' +
-                  '<option>Ketchup</option>' +
-                  '<option>Relish</option>' +
-                '</select>' +
-              '</form>' +
-              // '<i class="fa fa-4x fa-spinner fa-pulse"></i>' +
-            '</div></div>');
-
+        var $formflist = $('#kwik-form-filelist');
         $formflist.find('option').remove();
         var $sel = $formflist.find('select');
         for (var i = 0; i < flist.length; i++) {
@@ -60,37 +39,12 @@ define(function(require) {
             else
                 $sel.append('<option>' + flist[i] + '</option>');
         }
-        $sel.change(function() {
-            var val = $sel.find('option:selected').text();
-            kwiksession.session().done(function(session) {
-                session.set('current', val);
-                //sync to the backend
-                session.save();
-            });
-            popover.hide();
-        });
-
-        popover.options.content = $formflist;
-        popover.show();
     };
 
     var init_sidebar = function() {
 
         //Popover is tricky, we want to update it. so we manually trigger it, and show it again when we receive new data
-        var choosefile  = $('<i id="choosefilebtn" class="fa fa-2x fa-folder-open"></i>').on("click", function(e) {
-            console.log("choose file");
-            var popover = $('#choosefilebtn').data('bs.popover');
-            if (popover.tip().hasClass('in')) { //shown. condition comes from popover.js: toggle()
-                console.log("popover hide");
-                popover.hide();
-                return;
-            }
-            console.log("popover show");
-            popover.options.content = _wait_popover_htmlcontent;
-            popover.show();
-            kwiksession.session().then(_on_filelist, _on_filelist_error);
-        });
-
+        var choosefile  = $('<i id="choosefilebtn" class="fa fa-2x fa-folder-open"></i>');
         var statusico = $('<i class=""></i>');
 
         var set_status = function(status) {
@@ -113,8 +67,10 @@ define(function(require) {
         kwiksession.on_session().add(function(ses) {
           ses.on('change:status', function(model, value, opt) {set_status(value);});
           ses.on('change:status_desc', function(model, value, opt) {set_error(value);});
+          ses.on('change:files', function(model, value, opt) { _on_filelist(ses); });
           set_status(ses.get("status"));
           set_error(ses.get("status_desc"));
+          _on_filelist(ses);
 
         }, function(err) {
           set_status("error");
@@ -122,12 +78,42 @@ define(function(require) {
         });
 
 
-        //initialise the popover
-        choosefile.popover({
-            content: _wait_popover_htmlcontent,
-            trigger: 'manual',
-            html: true,
+        var _wait_popover_htmlcontent =
+            '<div id="kwik-open-dialog" title="Kwik Experiment">' +
+            '  <div id="kwik-current-file">Current experiment: <span>None</span> <i class="fa fa-times-circle"></i></div>' +
+            '  <div id="kwik-filelist-spinner"><i class="fa fa-4x fa-spinner fa-pulse"></i></div>' +
+            '  <div id="kwik-filelist-chooser" style="display: none">' +
+            '    <form id="kwik-form-filelist">' +
+            '    <select style="width: 100%;" multiple></select>' +
+            '  </div>' +
+            '</div>';
+        $(_wait_popover_htmlcontent).appendTo("body")
+
+        $('#kwik-open-dialog').dialog({ autoOpen: false,
+                                        modal: true,
+                                        minWidth: 640,
+                                        show: { effect: "explode", duration: 500 },
+                                        close: function( event, ui ) {},
+                                        buttons: [{
+                                            text: "Open",
+                                            click: function() {
+                                                $( this ).dialog( "close" );
+                                            }
+                                        }]
+                                      });
+        // $sel.change(function() {
+        //     var val = $sel.find('option:selected').text();
+        //     kwiksession.session().done(function(session) {
+        //         session.set('current', val);
+        //         //sync to the backend
+        //         session.save();
+        //     });
+        // });
+
+        choosefile.on("click", function(e) {
+            $('#kwik-open-dialog').dialog("open");
         });
+
 
         var traceview = $('<i class="fa fa-2x fa-eye"></i>').on("click", function(e) {
             console.log("traceview");
