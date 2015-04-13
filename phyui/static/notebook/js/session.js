@@ -40,11 +40,14 @@ define(function(require) {
         //reinit for each new session
         prom_session = $.Deferred();
 
-        // we close/reopen the model so it is reloaded in the frontend. otherwise
-        // it's only loaded when the first notebook is loaded and reloading a notebook
-        // do not works
-        //icall.ipython_call('import IPython.display; import phyui; phyui.session().uimodel.close(); phyui.session().uimodel.open(); IPython.display.JSON([phyui.session().uimodel._model_id])', function(msg) {
-        icall.ipython_call('import IPython.display; import phyui; phyui.session().iwant(); IPython.display.JSON([phyui.session().uimodel._model_id])', function(msg) {
+        // create a new model for each session, or the backbone model in the frontend is not always initialised
+        // currently this destroy the old one. (store in an array to avoid that behavior)
+        icall.ipython_call('import IPython.display\n' +
+                           'import phyui.ipython\n' +
+                           'import phyui\n' +
+                           'current_session_model = phyui.ipython.SessionModel(phyui.session())\n' +
+                           'IPython.display.JSON([current_session_model._model_id])\n'
+        , function(msg) {
             var mid = msg.content.data['application/json'][0];
             console.log("SessionModel id:", mid);
             var prom = IPython.notebook.session.kernel.widget_manager.get_model(mid);
