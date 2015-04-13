@@ -11,6 +11,7 @@ import random
 import numpy as np
 from IPython.utils.traitlets import Unicode, List
 from IPython.html.widgets import DOMWidget
+from IPython.display import display
 
 
 #------------------------------------------------------------------------------
@@ -54,3 +55,22 @@ class ClusterView(DOMWidget):
 
     def __init__(self, *args, **kwargs):
         super(ClusterView, self).__init__(*args, **kwargs)
+
+
+def add_cluster_view(session):
+    """Create and show a new cluster view."""
+    if hasattr(session, "clustering"):
+        clusters = [cluster_info(c, quality=0, nchannels=1,
+                                nspikes=2, ccg=None)
+                                for c in self.clustering.cluster_ids]
+    else:
+        clusters = []
+    view = ClusterView(clusters=clusters)
+
+    def on_select(_, __, clusters):
+        self.select([int(x) for x in clusters])
+
+    view.on_trait_change(on_select, 'value')
+
+    display(view)
+    return view
