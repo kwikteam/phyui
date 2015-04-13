@@ -38,7 +38,6 @@ class UISession(Session):
         self.action(self.show_waveforms, "Show waveforms")
 
         def _on_current(name, old, new):
-            print "bim:", new
             self.open(new)
         self.filename = None
         self.uimodel = SessionModel()
