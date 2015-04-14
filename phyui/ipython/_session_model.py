@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os.path
 
 from IPython.html.widgets import Widget
 from IPython.utils.traitlets import Int, Unicode, CUnicode, List
@@ -13,16 +14,33 @@ class SessionModel(Widget):
     current = CUnicode(sync=True)
     status = CUnicode("close", sync=True)
     status_desc = CUnicode(sync=True)
+    debug = CUnicode(sync=True)
 
     def __init__(self, session, *args, **kwargs):
         super(SessionModel, self).__init__(*args, **kwargs)
-
+        self.on_msg(self._handle_button_msg)
         self.session = session
         self.files = list_kwik(['/home/ctaf/src/cortex/data'])
 
-        def _on_current(name, old, new):
-            self.session_open(new)
-        self.on_trait_change(_on_current, 'current');
+    def _handle_button_msg(self, _, content):
+        """Handle a msg from the front-end.
+
+        Parameters
+        ----------
+        content: dict
+            Content of the msg."""
+        self.debug = "debug: " + str(content)
+        try:
+            if content.get('event', '') == 'open':
+                self.debug = "debug-ope: " + str(content)
+                self.session_open(content.get('filename'))
+            elif content.get('event', '') == 'close':
+                self.debug = "debug-clo: " + str(content)
+                self.session_close()
+            else:
+                raise Exception("command not implemented for ", str(content))
+        except Exception as err:
+            self.set_status("error", str(err))
 
     def set_session(self, session):
         self.session = session
@@ -32,22 +50,18 @@ class SessionModel(Widget):
         self.status_desc = status_desc
 
     def session_open(self, filename):
-        if filename == self.filename:
-            return
-        self.filename = filename
-        if filename == "None":
-            #self.close()
-            self.uimodel.set_status("close")
-            return
         try:
-            self.uimodel.set_status("opening")
-            self.session.open(os.path.join(self.data_store_path, str(filename)));
-            self.uimodel.set_status("open")
-            #self.uimodel.current = filename
+            self.set_status("opening")
+            self.session.open(str(filename));
+            self.current = filename
+            self.set_status("open")
         except Exception as err:
             #import traceback
-            #self.uimodel.set_status("error", traceback.format_exc())
-            self.uimodel.set_status("error", str(err))
+            #self.set_status("error", traceback.format_exc())
             self.filename = "None" #avoid set_status('close')
-            self.uimodel.current = "None"
+            self.current = "None"
             raise
+
+    def session_close(self):
+        self.set_status("close")
+        self.session.close()

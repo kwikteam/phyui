@@ -64,23 +64,25 @@ define(function(require) {
           choosefile.tooltip({ title: err});
         }
 
-        kwiksession.on_session().add(function(ses) {
+        kwiksession.on_session().add(function(ses, err) {
+          if (err) {
+            set_status("error");
+            set_error(err);
+            console.error("session error:", err);
+            return;
+          }
           ses.on('change:status', function(model, value, opt) {set_status(value);});
           ses.on('change:status_desc', function(model, value, opt) {set_error(value);});
           ses.on('change:files', function(model, value, opt) { _on_filelist(ses); });
           set_status(ses.get("status"));
           set_error(ses.get("status_desc"));
           _on_filelist(ses);
-
-        }, function(err) {
-          set_status("error");
-          set_error(err);
         });
 
 
         var _wait_popover_htmlcontent =
             '<div id="kwik-open-dialog" title="Kwik Experiment">' +
-            '  <div id="kwik-current-file">Current experiment: <span>None</span> <i class="fa fa-times-circle"></i></div>' +
+            '  <div id="kwik-current-file">Current experiment: <span>None</span> <i id="kwik-filelist-close-file" class="fa fa-times-circle"></i></div>' +
             '  <div id="kwik-filelist-spinner"><i class="fa fa-4x fa-spinner fa-pulse"></i></div>' +
             '  <div id="kwik-filelist-chooser" style="display: none">' +
             '    <form id="kwik-form-filelist">' +
@@ -89,15 +91,31 @@ define(function(require) {
             '</div>';
         $(_wait_popover_htmlcontent).appendTo("body")
 
+        $("#kwik-filelist-close-file").on('click', function(e) {
+          $('#kwik-open-dialog').dialog('close');
+          kwiksession.session().done(function(session) {
+            session.send({event: 'close'});
+          });
+        });
+
         $('#kwik-open-dialog').dialog({ autoOpen: false,
                                         modal: true,
                                         minWidth: 640,
                                         show: { effect: "explode", duration: 500 },
                                         close: function( event, ui ) {},
                                         buttons: [{
+                                            text: "Cancel",
+                                            click: function() {
+                                                $( this ).dialog( "close" );
+                                            }
+                                        },{
                                             text: "Open",
                                             click: function() {
                                                 $( this ).dialog( "close" );
+                                                var val = $('#kwik-open-dialog').find('option:selected').text();
+                                                kwiksession.session().done(function(session) {
+                                                  session.send({event: 'open', filename: val});
+                                                });
                                             }
                                         }]
                                       });

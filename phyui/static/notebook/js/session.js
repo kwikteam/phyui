@@ -55,14 +55,16 @@ define(function(require) {
                 prom.then(function(data) {
                     console.log("SessionModel found!!!!");
                     prom_session.resolve(data);
-                    on_session.fire(data);
+                    on_session.fire(data, undefined);
                 });
             } else {
                 console.log("cannot find the promise for the session controller.");
                 prom_session.reject("no model found for the session");
+                on_session.fire(undefined, "no model found for the session");
             }
           }, function(msg) {
               prom_session.reject("error: " + msg.content.ename + ": " + msg.content.evalue, "\n", msg.content.traceback);
+              on_session.fire(undefined, "error: " + msg.content.ename + ": " + msg.content.evalue, "\n", msg.content.traceback);
           }, _kernel);
     };
 
