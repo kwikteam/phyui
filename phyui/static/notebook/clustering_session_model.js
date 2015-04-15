@@ -49,7 +49,7 @@ define(function(require) {
                    'IPython.display.JSON([current_session_model._model_id])\n'
         , function(msg) {
             var mid = msg.content.data['application/json'][0];
-            console.log("SessionModel id:", mid);
+            console.log("ClusteringSessionModel id:", mid);
             var prom = IPython.notebook.session.kernel.widget_manager.get_model(mid);
             if (prom) {
                 prom.then(function(data) {

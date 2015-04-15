@@ -15,8 +15,6 @@ define(function(require) {
     var _on_filelist = function(session) {
         var current = session.get('current');
         var flist = session.get('files');
-        console.log('current:', current, 'filelists:', flist);
-
         $("#kwik-filelist-spinner").hide();
         $("#kwik-filelist-chooser").show();
 

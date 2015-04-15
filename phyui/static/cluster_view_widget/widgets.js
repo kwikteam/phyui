@@ -29,7 +29,6 @@ define(function(require) {
     // ------------------------------------------------------------------------
     var ClusterWidget = IPython.DOMWidgetView.extend({
         update_selection: function(selection) {
-            console.log("update sel:", selection);
             this.model.set('value', selection, {updated_view: this});
             this.touch();
         },
