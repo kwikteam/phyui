@@ -24,7 +24,7 @@ define(function(require) {
     var IPython = require('base/js/namespace');
     var events = require('base/js/events');
     var $ = require('jquery');
-    var icall = require('nbextensions/phyui/notebook/js/call');
+    var icall = require('nbextensions/phyui/notebook/ipython_kernel_call');
 
     var prom_session = undefined;
     var on_session = $.Callbacks("memory");
@@ -42,11 +42,11 @@ define(function(require) {
 
         // create a new model for each session, or the backbone model in the frontend is not always initialised
         // currently this destroy the old one. (store in an array to avoid that behavior)
-        icall.ipython_call('import IPython.display\n' +
-                           'import phyui.ipython\n' +
-                           'import phyui\n' +
-                           'current_session_model = phyui.ipython.SessionModel(phyui.session())\n' +
-                           'IPython.display.JSON([current_session_model._model_id])\n'
+        icall.call('import IPython.display\n' +
+                   'import phyui.ipython\n' +
+                   'import phyui\n' +
+                   'current_session_model = phyui.ipython.ClusteringSessionModel(phyui.session())\n' +
+                   'IPython.display.JSON([current_session_model._model_id])\n'
         , function(msg) {
             var mid = msg.content.data['application/json'][0];
             console.log("SessionModel id:", mid);

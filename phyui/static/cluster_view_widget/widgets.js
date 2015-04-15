@@ -4,8 +4,8 @@
 
 define(function(require) {
     widget = require('widgets/js/widget');
-    clusterwidget = require('/nbextensions/phyui/cluster/js/cluster_widget.js');
-    require('/nbextensions/phyui/notebook/js/utils.js');
+    clusterwidget = require('/nbextensions/phyui/cluster_view_widget/cluster_widget.js');
+    require('/nbextensions/phyui/cluster_view_widget/utils.js');
 
     // Utility functions
     // ------------------------------------------------------------------------

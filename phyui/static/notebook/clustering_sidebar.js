@@ -5,7 +5,7 @@ define(function(require) {
 
     var IPython = require('base/js/namespace');
     var $ = require('jquery');
-    var kwiksession = require('nbextensions/phyui/notebook/js/session');
+    var kwiksession = require('nbextensions/phyui/notebook/clustering_session_model');
 
     var resize_sidebar = function() {
         var sidebar = $('#cluster-sidebar');
@@ -93,7 +93,6 @@ define(function(require) {
             session.send({event: 'close'});
           });
         });
-
         $('#kwik-open-dialog').dialog({ autoOpen: false,
                                         modal: true,
                                         minWidth: 640,
@@ -115,20 +114,10 @@ define(function(require) {
                                             }
                                         }]
                                       });
-        // $sel.change(function() {
-        //     var val = $sel.find('option:selected').text();
-        //     kwiksession.session().done(function(session) {
-        //         session.set('current', val);
-        //         //sync to the backend
-        //         session.save();
-        //     });
-        // });
 
         choosefile.on("click", function(e) {
             $('#kwik-open-dialog').dialog("open");
         });
-
-
         var traceview = $('<i class="fa fa-2x fa-eye"></i>').on("click", function(e) {
             console.log("traceview");
             //icall.ipython_call('1 + 2');
@@ -139,23 +128,18 @@ define(function(require) {
         });
         var manualcluster = $('<i id="autoclusterbtn" class="fa fa-2x fa-child"></i>').on("click", function(e) {
             console.log("manual clustering");
-            var notebook_name = IPython.notebook.notebook_name;
-            var notebook_path = IPython.notebook.notebook_path;
-            window.open('/nbextensions/phyui/manual_clustering.html?notebook_name=' + notebook_name + '&notebook_path=' + notebook_path);
+            //OLD manual clustering interface
+            //var notebook_name = IPython.notebook.notebook_name;
+            //var notebook_path = IPython.notebook.notebook_path;
+            //window.open('/nbextensions/phyui/manual_clustering.html?notebook_name=' + notebook_name + '&notebook_path=' + notebook_path);
         });
-
-
-
         var sidebar = $('<div id="cluster-sidebar" style="float:left; position: fixed; z-index:1000">')
             .append(choosefile).append(statusico).append('<br>')
             .append(traceview).append('<br>')
             .append(autocluster).append('<br>')
             .append(manualcluster).append('<br>')
         ;
-
         $('body').append(sidebar);
-
-
         $(window).resize(resize_sidebar);
         resize_sidebar();
         return sidebar;

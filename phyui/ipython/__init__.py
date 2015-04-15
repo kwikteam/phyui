@@ -16,5 +16,5 @@ def prepare_js():
 
 prepare_js()
 
-from ._session_model import SessionModel
+from ._session_model import ClusteringSessionModel
 from .cluster_view import add_cluster_view

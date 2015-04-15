@@ -46,7 +46,7 @@ def cluster_info(clusterid, quality, nchannels, nspikes, ccg):
 
 class ClusterView(DOMWidget):
     _view_name = Unicode('ClusterWidget', sync=True)
-    _view_module = Unicode('/nbextensions/phyui/cluster/js/widgets.js',
+    _view_module = Unicode('/nbextensions/phyui/cluster_view_widget/widgets.js',
                            sync=True)
     description = Unicode(help="Description", sync=True)
     clusters = List(sync=True)

@@ -6,7 +6,7 @@ from IPython.utils.traitlets import Int, Unicode, CUnicode, List
 from phy.io.kwik_model import list_kwik
 from phy.utils.settings import declare_namespace
 
-class SessionModel(Widget):
+class ClusteringSessionModel(Widget):
     """
     widget is used as a base class for communicating between python and the frontend.
     """
@@ -18,7 +18,7 @@ class SessionModel(Widget):
     debug = CUnicode(sync=True)
 
     def __init__(self, session, *args, **kwargs):
-        super(SessionModel, self).__init__(*args, **kwargs)
+        super(ClusteringSessionModel, self).__init__(*args, **kwargs)
 
         self.on_msg(self._handle_button_msg)
         self.session = session
