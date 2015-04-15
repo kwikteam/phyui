@@ -4,6 +4,7 @@ import os.path
 from IPython.html.widgets import Widget
 from IPython.utils.traitlets import Int, Unicode, CUnicode, List
 from phy.io.kwik_model import list_kwik
+from phy.utils.settings import declare_namespace
 
 class SessionModel(Widget):
     """
@@ -18,9 +19,13 @@ class SessionModel(Widget):
 
     def __init__(self, session, *args, **kwargs):
         super(SessionModel, self).__init__(*args, **kwargs)
+
+
         self.on_msg(self._handle_button_msg)
         self.session = session
-        self.files = list_kwik(['/home/ctaf/src/cortex/data'])
+
+        self.folders = self.session.settings_manager.get_user_settings('phy.data_search_dirs', scope='global')
+        self.files = list_kwik(self.folders)
 
     def _handle_button_msg(self, _, content):
         """Handle a msg from the front-end.
