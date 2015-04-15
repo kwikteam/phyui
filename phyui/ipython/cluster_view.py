@@ -62,13 +62,13 @@ def add_cluster_view(session):
     if hasattr(session, "clustering"):
         clusters = [cluster_info(c, quality=0, nchannels=1,
                                 nspikes=2, ccg=None)
-                                for c in self.clustering.cluster_ids]
+                                for c in session.clustering.cluster_ids]
     else:
         clusters = []
     view = ClusterView(clusters=clusters)
 
     def on_select(_, __, clusters):
-        self.select([int(x) for x in clusters])
+        session.select([int(x) for x in clusters])
 
     view.on_trait_change(on_select, 'value')
 
