@@ -20,7 +20,6 @@ class SessionModel(Widget):
     def __init__(self, session, *args, **kwargs):
         super(SessionModel, self).__init__(*args, **kwargs)
 
-
         self.on_msg(self._handle_button_msg)
         self.session = session
 
@@ -57,9 +56,9 @@ class SessionModel(Widget):
     def session_open(self, filename):
         try:
             self.set_status("opening")
-            self.session.open(str(filename));
+            self.session.open(str(filename))
             self.current = filename
-            self.set_status("open")
+            self.set_status("open", "experiment: "  + filename)
         except Exception as err:
             #import traceback
             #self.set_status("error", traceback.format_exc())
