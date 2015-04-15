@@ -71,8 +71,8 @@ define(function(require) {
 
     //reinit the session on kernel reconnection
     events.on('kernel_connected.Kernel', function(){
-        //_init_session();
         _need_init = true;
+        _init_session();
     });
 
 

@@ -45,9 +45,19 @@ define(function(require) {
             },
             //input : dolog.bind(undefined, 'input'),
         };
-        if (!kernel)
-          kernel = IPython.notebook.session.kernel;
-        kernel.execute(code, cbs, { silent: false } );
+        try {
+          if (!kernel)
+            kernel = IPython.notebook.session.kernel;
+          kernel.execute(code, cbs, { silent: false } );
+        } catch (err) {
+          error_cb( { msg_type: "error",
+                      content: {
+                        ename: "KernelError",
+                        evalue: err,
+                        traceback: ""
+                      }
+                    });
+        }
     };
 
     return { 'ipython_call' : ipython_call };
