@@ -12,16 +12,6 @@ define(function(require) {
         sidebar.css('top', (window.innerHeight - sidebar.height()) / 2 + 'px');
     };
 
-    var _on_filelist_error = function(err) {
-        var $formflist = $(
-            '<div><div id="filelist-chooser">' +
-                err +
-            '</div></div>');
-        var popover = $('#choosefilebtn').data('bs.popover');
-        popover.options.content = $formflist.html();
-        popover.show();
-    }
-
     var _on_filelist = function(session) {
         var current = session.get('current');
         var flist = session.get('files');
@@ -60,6 +50,12 @@ define(function(require) {
         }
 
         var set_error = function(err) {
+          console.log("setting err to: ", err);
+          statusico.tooltip("destroy");
+          choosefile.tooltip("destroy");
+          if (!err) {
+            return;
+          }
           statusico.tooltip({ title: err});
           choosefile.tooltip({ title: err});
         }
