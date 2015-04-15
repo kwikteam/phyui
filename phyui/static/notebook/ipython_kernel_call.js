@@ -1,6 +1,10 @@
-"use strict";
-
+/* Simple wrapper around IPython kernel call
+**
+** Example:
+**   require('ipython_kernel_call').call("python code", success_cb, error_cb);
+*/
 define(function(require) {
+    "use strict";
 
     var IPython = require('base/js/namespace');
     var $ = require('jquery');
@@ -60,6 +64,6 @@ define(function(require) {
         }
     };
 
-    return { 'ipython_call' : ipython_call };
+    return { 'call' : ipython_call };
 
 });
