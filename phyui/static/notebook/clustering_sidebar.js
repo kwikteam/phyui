@@ -6,6 +6,7 @@ define(function(require) {
     var IPython = require('base/js/namespace');
     var $ = require('jquery');
     var kwiksession = require('nbextensions/phyui/notebook/clustering_session_model');
+    var icall = require('nbextensions/phyui/notebook/ipython_kernel_call');
 
     var resize_sidebar = function() {
         var sidebar = $('#cluster-sidebar');
@@ -118,19 +119,38 @@ define(function(require) {
         });
         var traceview = $('<i class="fa fa-2x fa-eye"></i>').on("click", function(e) {
             console.log("traceview");
+            var torun = 'import phyui\n' +
+                        'from phyui.ipython.cluster_view import add_cluster_view\n' +
+                        'add_cluster_view(phyui.session())\n';
+            var cell = IPython.notebook.insert_cell_at_bottom('code');
+            cell.set_text(torun);
+            cell.execute();
             //icall.ipython_call('1 + 2');
         });
         var autocluster = $('<i class="fa fa-2x fa-tasks"></i>').on("click", function(e) {
             //icall.ipython_call('1 + 2ss');
             console.log("auto clustering");
         });
-        var manualcluster = $('<i id="autoclusterbtn" class="fa fa-2x fa-child"></i>').on("click", function(e) {
+        var manualcluster = $('<i id="autoclusterbtn" class="fa fa-2x fa-child"></i>');
+
+        var set_error_manual = function(msg) {
+          var err = "error: " + msg.content.ename + ": " + msg.content.evalue + "\n" + msg.content.traceback;
+          console.error("show_manual_clustering error:", err);
+          manualcluster.tooltip("destroy");
+          manualcluster.tooltip({title: err});
+        }
+        manualcluster.on("click", function(e) {
             console.log("manual clustering");
-            //OLD manual clustering interface
-            //var notebook_name = IPython.notebook.notebook_name;
-            //var notebook_path = IPython.notebook.notebook_path;
-            //window.open('/nbextensions/phyui/manual_clustering.html?notebook_name=' + notebook_name + '&notebook_path=' + notebook_path);
+            icall.call("%gui qt4", function() {
+                var torun = 'from phyui.qt import ManualClusteringMainWindow\n' +
+                            'mySW = ManualClusteringMainWindow()\n' +
+                            'mySW.show()\n';
+                icall.call(torun, undefined, set_error_manual);
+              },
+                set_error_manual
+            );
         });
+
         var sidebar = $('<div id="cluster-sidebar" style="float:left; position: fixed; z-index:1000">')
             .append(choosefile).append(statusico).append('<br>')
             .append(traceview).append('<br>')
