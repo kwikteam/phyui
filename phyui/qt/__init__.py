@@ -42,13 +42,13 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
         # Dock widgets options
         self.setDockOptions(QtGui.QMainWindow.AllowTabbedDocks|QtGui.QMainWindow.AllowNestedDocks|QtGui.QMainWindow.AnimatedDocks)
 
-        canv = phyui.session().show_waveforms(show=False).view
+        canv = phyui.session().show_waveforms().view
         self.create_view(canv.native, "Waveforms", position=QtCore.Qt.RightDockWidgetArea)
 
-        feat = phyui.session().show_features(show=False).view
+        feat = phyui.session().show_features().view
         self.create_view(feat.native, "Features", position=QtCore.Qt.LeftDockWidgetArea)
 
-        ccg = phyui.session().show_correlograms(show=False).view
+        ccg = phyui.session().show_correlograms().view
         self.create_view(ccg.native, "Correlograms", position=QtCore.Qt.LeftDockWidgetArea)
 
         # from PyQt4 import QtWebKit
