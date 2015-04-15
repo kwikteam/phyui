@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
-    jshint = require('gulp-jshint');
-
+    jshint = require('gulp-jshint'),
+    jslint = require('gulp-jslint');
 
 /*****
  * JSHint task, lints the lib and test *.js files.
@@ -15,6 +15,18 @@ gulp.task('jshint', function () {
 });
 
 /*****
+ * JSHint task, lints the lib and test *.js files.
+ *****/
+gulp.task('jslint', function () {
+    return gulp.src([
+        '*.js',
+        '*/*.js',
+        '*/*/*.js',
+        ])
+        .pipe(jslint());
+});
+
+/*****
  * Base task
  *****/
-gulp.task('default', ['jshint']);
+gulp.task('default', ['jshint', 'jslint']);

@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
+## -*- coding: utf-8 -*-
+## Author(s):
+##  - Cedric Gestes <cedric.gestes@gmail.com>
+##
 
-import os
+import os.path
 
 from IPython.html import nbextensions
-
-__author__ = 'kwikteam'
-__email__ = 'rossant at github'
-__version__ = '0.1.0-alpha'
-
-__all__ = ( 'session', 'UISession' )
-
-from ._session import session
 
 def prepare_js():
     """ This is needed to map js/css to the nbextensions folder
@@ -20,3 +15,6 @@ def prepare_js():
                                      destination='phyui')
 
 prepare_js()
+
+from ._session_model import ClusteringSessionModel
+from .cluster_view import add_cluster_view
