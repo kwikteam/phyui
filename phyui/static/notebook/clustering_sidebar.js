@@ -143,8 +143,8 @@ define(function(require) {
             console.log("manual clustering");
             icall.call("%gui qt4", function() {
                 var torun = 'from phyui.qt import ManualClusteringMainWindow\n' +
-                            'mySW = ManualClusteringMainWindow()\n' +
-                            'mySW.show()\n';
+                            'clustering_main_window = ManualClusteringMainWindow()\n' +
+                            'clustering_main_window.show()\n';
                 icall.call(torun, undefined, set_error_manual);
               },
                 set_error_manual
