@@ -115,9 +115,9 @@ class ManualClusteringMainWindow(QtGui.QMainWindow):
 
     def restore_geometry(self):
         """Restore the arrangement of the whole window."""
-        self.restoreState(self.settings.value("state", QtCore.QByteArray()).toByteArray())
-        self.resize(self.settings.value("size", QtCore.QSize(640, 480)).toSize())
-        self.move(self.settings.value("pos", QtCore.QPoint(200, 200)).toPoint())
+        self.restoreState(self.settings.value("statess", QtCore.QByteArray(), type=QtCore.QByteArray))
+        self.resize(self.settings.value("size", QtCore.QSize(640, 480), type=QtCore.QSize))
+        self.move(self.settings.value("pos", QtCore.QPoint(200, 200), type=QtCore.QPoint))
 
 
 import sys
